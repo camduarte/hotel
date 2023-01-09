@@ -5,7 +5,7 @@
  */
 package ar.com.camd.hotel.model;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 /**
  * <code>Guest</code>
@@ -18,7 +18,7 @@ public class Guest {
 	private Integer id;
 	private String name;
 	private String lastname;
-	private Date birthday;
+	private LocalDate birthday;
 	private Nationality nationality;
 	private String phoneNumber;
 	private Reserve reserve;

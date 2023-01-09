@@ -2,34 +2,34 @@ DROP DATABASE IF EXISTS hotel;
 CREATE DATABASE hotel;
 USE hotel;
 
-CREATE TABLE reserva (
+CREATE TABLE reserve (
 	id INT NOT NULL AUTO_INCREMENT,
-	fecha_entrada DATE NOT NULL,
-	fecha_salida DATE NOT NULL,
-	valor DECIMAL(15,2) NOT NULL,
-	forma_pago VARCHAR(50),
+	entry_date DATE NOT NULL,
+	exit_date DATE NOT NULL,
+	value DECIMAL(15,2) NOT NULL,
+	payment_method VARCHAR(50),
 	PRIMARY KEY(id)
 )ENGINE=INNODB;
 
 
-CREATE TABLE huesped (
+CREATE TABLE guest (
 	id INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(50) NOT NULL,
-	apellido VARCHAR(50) NOT NULL,
-	fecha_nacimiento DATE,
-	nacionalidad VARCHAR(50),
-	telefono VARCHAR(50) NOT NULL,
-	id_reserva INT NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	lastname VARCHAR(50) NOT NULL,
+	birthdate DATE,
+	nationality VARCHAR(50),
+	phone_number VARCHAR(50) NOT NULL,
+	id_reserve INT NOT NULL,
 	PRIMARY KEY(id)
 )ENGINE=INNODB;
 
-CREATE TABLE empleado (
+CREATE TABLE employee (
 	id INT NOT NULL AUTO_INCREMENT,
-	nombre VARCHAR(50) NOT NULL,
-	apellido VARCHAR(50) NOT NULL,
+	name VARCHAR(50) NOT NULL,
+	lastname VARCHAR(50) NOT NULL,
 	email VARCHAR(50) NOT NULL,
 	password VARCHAR(50) NOT NULL,
 	PRIMARY KEY(id)
 )ENGINE=INNODB;
 
-ALTER TABLE hotel.huesped ADD FOREIGN KEY (id_reserva) REFERENCES hotel.reserva(id);
+ALTER TABLE hotel.guest ADD FOREIGN KEY (id_reserve) REFERENCES hotel.reserve(id);
