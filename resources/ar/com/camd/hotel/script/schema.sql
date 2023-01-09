@@ -1,7 +1,6 @@
 CREATE DATABASE hotel;
 USE hotel;
 
-
 CREATE TABLE reserva (
 	id INT NOT NULL AUTO_INCREMENT,
 	fecha_entrada DATE NOT NULL,
@@ -18,7 +17,7 @@ CREATE TABLE huesped (
 	apellido VARCHAR(50) NOT NULL,
 	fecha_nacimiento DATE,
 	nacionalidad VARCHAR(50),
-	telefono MEDIUMINT NOT NULL,
+	telefono VARCHAR(50) NOT NULL,
 	id_reserva INT NOT NULL,
 	PRIMARY KEY(id)
 )ENGINE=INNODB;
