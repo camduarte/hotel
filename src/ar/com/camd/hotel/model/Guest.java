@@ -30,26 +30,78 @@ public class Guest {
 	 * @param birthdate The guest birth date.
 	 * @param nationality The guest nationality.
 	 * @param phoneNumber The guest phone number.
+	 * @param reserve The reserve.
 	 */
 	public Guest(Integer id, String name, String lastname, LocalDate birthdate, Nationality nationality,
-			String phoneNumber) {
+			String phoneNumber, Reserve reserve) {
 		this.id = id;
 		this.name = name;
 		this.lastname = lastname;
 		this.birthdate = birthdate;
 		this.nationality = nationality;
 		this.phoneNumber = phoneNumber;
+		this.reserve = reserve;
 	}
-	
+
+	/**
+	 * @return the id
+	 */
+	public Integer getId() {
+		return id;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @return the lastname
+	 */
+	public String getLastname() {
+		return lastname;
+	}
+
+	/**
+	 * @return the birthdate
+	 */
+	public LocalDate getBirthdate() {
+		return birthdate;
+	}
+
+	/**
+	 * @return the nationality
+	 */
+	public Nationality getNationality() {
+		return nationality;
+	}
+
+	/**
+	 * @return the phoneNumber
+	 */
+	public String getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	/**
+	 * @return the reserve
+	 */
+	public Reserve getReserve() {
+		return reserve;
+	}
+
 	@Override
 	public String toString() {
-		return String.format("{id: %d, name: %s, lastname: %s, birthdate: %s, nationality: %s, phoneNumber: %s}", 
+		return String.format("{id: %d, name: %s, lastname: %s, birthdate: %s, nationality: %s, phoneNumber: %s, reserve: %s}", 
 				this.id, 
 				this.name, 
 				this.lastname, 
 				this.birthdate.toString(), 
 				this.nationality, 
-				this.phoneNumber
+				this.phoneNumber,
+				this.reserve
 				);
 	}
 }

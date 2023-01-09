@@ -14,6 +14,8 @@ import java.util.List;
 
 import ar.com.camd.hotel.model.Guest;
 import ar.com.camd.hotel.model.Nationality;
+import ar.com.camd.hotel.model.PaymentMethod;
+import ar.com.camd.hotel.model.Reserve;
 
 /**
  * <code>GuestDao</code>
@@ -26,7 +28,21 @@ public class GuestDao implements Dao<Guest> {
 
 	private Connection con;
 
-	private final String QRY_FIND_ALL = "SELECT id, name, lastname, birthdate, nationality, phone_number FROM hotel.guest";
+	private final String QRY_FIND_ALL = "SELECT "
+			+ "g.id, "
+			+ "g.name, "
+			+ "g.lastname, "
+			+ "g.birthdate, "
+			+ "g.nationality, "
+			+ "g.phone_number, "
+			+ "r.id, "
+			+ "r.checkin_date, "
+			+ "r.checkout_date, "
+			+ "r.value, "
+			+ "r.payment_method "
+			+ "FROM guest AS g "
+			+ "INNER JOIN reserve AS r "
+			+ "ON g.id = r.id";
 
 	/**
 	 * @param con The data base connection.
@@ -48,13 +64,22 @@ public class GuestDao implements Dao<Guest> {
 			PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_ALL);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
+				Reserve reserve = new Reserve(
+						resultSet.getInt("id"), 
+						resultSet.getDate("checkin_date").toLocalDate(),
+						resultSet.getDate("checkout_date").toLocalDate(),
+						resultSet.getBigDecimal("value"),
+						PaymentMethod.valueOf(resultSet.getString("payment_method")));
+				
 				Guest guest = new Guest(
 						resultSet.getInt("id"), 
 						resultSet.getString("name"),
 						resultSet.getString("lastname"),
 						resultSet.getDate("birthdate").toLocalDate(),
 						Nationality.valueOf(resultSet.getString("nationality")),
-						resultSet.getString("phone_number"));
+						resultSet.getString("phone_number"),
+						reserve);
+
 				System.out.println(guest);
 				guests.add(guest);
 			}

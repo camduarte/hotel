@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import ar.com.camd.hotel.controller.FindController;
+import ar.com.camd.hotel.model.Guest;
 import ar.com.camd.hotel.model.Reserve;
 
 @SuppressWarnings("serial")
@@ -125,7 +126,22 @@ public class Busqueda extends JFrame {
 		modeloH.addColumn("Nacionalidad");
 		modeloH.addColumn("Telefono");
 		modeloH.addColumn("Numero de Reserva");
-		
+
+		// Fills the guest table with information.
+	 	List<Guest> guests = findController.getGuests();
+
+	 	guests.forEach(guest -> {
+	 		modeloH.addRow(new Object[] {
+	 				guest.getId(),
+	 				guest.getName(),
+	 				guest.getLastname(),
+	 				guest.getBirthdate(),
+	 				guest.getNationality(),
+	 				guest.getPhoneNumber(),
+	 				guest.getReserve().getId()
+	 		});
+	 	});
+
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("../img/Ha-100px.png")));
 		lblNewLabel_2.setBounds(56, 51, 104, 107);
