@@ -8,6 +8,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -129,7 +131,6 @@ public class Busqueda extends JFrame {
 
 		// Fills the guest table with information.
 	 	List<Guest> guests = findController.getGuests();
-
 	 	guests.forEach(guest -> {
 	 		modeloH.addRow(new Object[] {
 	 				guest.getId(),
@@ -237,7 +238,36 @@ public class Busqueda extends JFrame {
 		btnbuscar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
+				// Clean the tables.
+				modelo.getDataVector().clear();
+				modeloH.getDataVector().clear();
 
+				String searchTerm = txtBuscar.getText();
+				System.out.println(searchTerm);
+				if (isDigit(searchTerm)) {
+				} else {
+					List<Guest> guests = findController.getByLastName(searchTerm);
+				 	guests.forEach(guest -> {
+
+				 		modeloH.addRow(new Object[] {
+				 				guest.getId(),
+				 				guest.getName(),
+				 				guest.getLastname(),
+				 				guest.getBirthdate(),
+				 				guest.getNationality(),
+				 				guest.getPhoneNumber(),
+				 				guest.getReserve().getId()
+				 		});
+				 		
+				 		modelo.addRow(new Object[] {
+				 				guest.getReserve().getId(),
+				 				guest.getReserve().getCheckinDate(),
+				 				guest.getReserve().getCheckoutDate(),
+				 				guest.getReserve().getValue(),
+				 				guest.getReserve().getPaymentMethod()
+				 		});
+				 	});
+				}
 			}
 		});
 		btnbuscar.setLayout(null);
@@ -283,7 +313,7 @@ public class Busqueda extends JFrame {
 		setResizable(false);
 	}
 	
-//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
+	//Código que permite mover la ventana por la pantalla según la posición de "x" y "y"
 	 private void headerMousePressed(java.awt.event.MouseEvent evt) {
 	        xMouse = evt.getX();
 	        yMouse = evt.getY();
@@ -293,5 +323,16 @@ public class Busqueda extends JFrame {
 	        int x = evt.getXOnScreen();
 	        int y = evt.getYOnScreen();
 	        this.setLocation(x - xMouse, y - yMouse);
-}
+	    }
+	    
+	    /**
+	     * Check if the String is a digit.
+	     * @param txt The text to evaluate.
+	     * @return true if it is a digit.
+	     */
+	    private static boolean isDigit(String txt) {
+			 Pattern p = Pattern.compile("\\d+");
+			 Matcher m = p.matcher(txt);
+			 return m.matches();
+	    }
 }

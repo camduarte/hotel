@@ -23,4 +23,10 @@ public interface GuestService {
 	 * @return The guests.
 	 */
 	public List<Guest> getAll();
+	
+	/**
+	 * Gets guests by last name.
+	 * @return The guests.
+	 */
+	public List<Guest> getByLastName(String lastName);
 }

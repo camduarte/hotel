@@ -43,6 +43,23 @@ public class GuestDao implements Dao<Guest> {
 			+ "FROM guest AS g "
 			+ "INNER JOIN reserve AS r "
 			+ "ON g.id = r.id";
+	
+	private final String QRY_FIND_BY_LAST_NAME = "SELECT "
+			+ "g.id, "
+			+ "g.name, "
+			+ "g.lastname, "
+			+ "g.birthdate, "
+			+ "g.nationality, "
+			+ "g.phone_number, "
+			+ "r.id, "
+			+ "r.checkin_date, "
+			+ "r.checkout_date, "
+			+ "r.value, "
+			+ "r.payment_method "
+			+ "FROM guest AS g "
+			+ "INNER JOIN reserve AS r "
+			+ "ON g.id = r.id "
+			+ "AND g.lastname = ?";
 
 	/**
 	 * @param con The data base connection.
@@ -100,5 +117,41 @@ public class GuestDao implements Dao<Guest> {
 		// TODO Auto-generated method stub
 		
 	}
+	
+	/**
+	 * Find guests by last name.
+	 * @param lastName
+	 * @return the guests.
+	 */
+	public List<Guest> find(String lastName) {
+		List<Guest> guests = new ArrayList<>();
+		try {
+			PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_BY_LAST_NAME);
+			preparedStatement.setString(1, lastName);
+			ResultSet resultSet = preparedStatement.executeQuery();
+			while (resultSet.next()) {
+				Reserve reserve = new Reserve(
+						resultSet.getInt("id"), 
+						resultSet.getDate("checkin_date").toLocalDate(),
+						resultSet.getDate("checkout_date").toLocalDate(),
+						resultSet.getBigDecimal("value"),
+						PaymentMethod.valueOf(resultSet.getString("payment_method")));
+				
+				Guest guest = new Guest(
+						resultSet.getInt("id"), 
+						resultSet.getString("name"),
+						resultSet.getString("lastname"),
+						resultSet.getDate("birthdate").toLocalDate(),
+						Nationality.valueOf(resultSet.getString("nationality")),
+						resultSet.getString("phone_number"),
+						reserve);
 
+				System.out.println(guest);
+				guests.add(guest);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return guests;
+	}
 }

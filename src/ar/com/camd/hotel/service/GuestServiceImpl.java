@@ -34,4 +34,9 @@ public class GuestServiceImpl implements GuestService {
 		return this.guestDao.findAll();
 	}
 
+	@Override
+	public List<Guest> getByLastName(String lastName) {
+		return this.guestDao.find(lastName);
+	}
+
 }

@@ -49,4 +49,12 @@ public class FindController {
 	public List<Guest> getGuests() {
 		return this.guestService.getAll();
 	}
+
+	/**
+	 * Gets guests by last name.
+	 * @return The guests.
+	 */
+	public List<Guest> getByLastName(String lastName) {
+		return this.guestService.getByLastName(lastName);
+	}
 }
