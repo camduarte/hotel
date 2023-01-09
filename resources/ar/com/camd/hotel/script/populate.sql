@@ -1,4 +1,4 @@
-INSERT INTO reserve (entry_date, exit_date, value, payment_method) VALUES
+INSERT INTO reserve (checkin_date, checkout_date, value, payment_method) VALUES
 ('2023-04-12', '2023-04-19', 10000.0, 'CASH'),
 ('2023-05-25', '2023-05-28', 11000.0, 'DEBIT'),
 ('2023-02-09', '2023-02-24', 20000.0, 'CREDIT'),
@@ -12,5 +12,5 @@ INSERT INTO guest (name, lastname, birthdate, nationality, phone_number, id_rese
 ('Richie', 'Blackmore', '1935-12-08', 'Zueco', '5765', 4),
 ('Shaggy', 'Rogers', '1987-11-29', 'Rumaí', '2432', 5);
 
-INSERT INTO empleado (name, lastname, email, password) VALUES
+INSERT INTO employee (name, lastname, email, password) VALUES
 ('admin', 'admin', 'admin@gmail.com', 'admin');

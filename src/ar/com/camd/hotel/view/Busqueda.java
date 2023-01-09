@@ -7,6 +7,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -20,6 +21,9 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
+
+import ar.com.camd.hotel.controller.FindController;
+import ar.com.camd.hotel.model.Reserve;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -84,9 +88,6 @@ public class Busqueda extends JFrame {
 		panel.setBounds(20, 169, 865, 328);
 		contentPane.add(panel);
 
-		
-		
-		
 		tbReservas = new JTable();
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -97,8 +98,21 @@ public class Busqueda extends JFrame {
 		modelo.addColumn("Fecha Check Out");
 		modelo.addColumn("Valor");
 		modelo.addColumn("Forma de Pago");
-		
-		
+
+		// Fills the reservation table with information.
+		FindController findController = new FindController();
+	 	List<Reserve> reservations = findController.getReservations();
+
+	 	reservations.forEach(reserve -> {
+	 		modelo.addRow(new Object[] {
+	 				reserve.getId(),
+	 				reserve.getCheckinDate(),
+	 				reserve.getCheckoutDate(),
+	 				reserve.getValue(),
+	 				reserve.getPaymentMethod()
+	 		});
+	 	});
+
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));

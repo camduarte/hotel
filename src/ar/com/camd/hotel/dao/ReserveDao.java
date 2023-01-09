@@ -24,7 +24,7 @@ import ar.com.camd.hotel.model.Reserve;
 public class ReserveDao implements Dao<Reserve> {
 	private Connection con;
 
-	private final String QRY_FIND_ALL = "SELECT id, entry_date, exit_date, value, payment_method FROM hotel.reserve";
+	private final String QRY_FIND_ALL = "SELECT id, checkin_date, checkout_date, value, payment_method FROM hotel.reserve";
 
 	/**
 	 * @param con The data base connection.
@@ -48,8 +48,8 @@ public class ReserveDao implements Dao<Reserve> {
 			while (resultSet.next()) {
 				Reserve reserve = new Reserve(
 						resultSet.getInt("id"), 
-						resultSet.getDate("entry_date").toLocalDate(),
-						resultSet.getDate("exit_date").toLocalDate(),
+						resultSet.getDate("checkin_date").toLocalDate(),
+						resultSet.getDate("checkout_date").toLocalDate(),
 						resultSet.getBigDecimal("value"),
 						PaymentMethod.valueOf(resultSet.getString("payment_method")));
 				System.out.println(reserve);

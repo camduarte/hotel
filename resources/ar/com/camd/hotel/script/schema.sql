@@ -4,8 +4,8 @@ USE hotel;
 
 CREATE TABLE reserve (
 	id INT NOT NULL AUTO_INCREMENT,
-	entry_date DATE NOT NULL,
-	exit_date DATE NOT NULL,
+	checkin_date DATE NOT NULL,
+	checkout_date DATE NOT NULL,
 	value DECIMAL(15,2) NOT NULL,
 	payment_method VARCHAR(50),
 	PRIMARY KEY(id)
