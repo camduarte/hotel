@@ -7,6 +7,7 @@ package ar.com.camd.hotel.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 /**
  * <code>Reserve</code> Represents a hotel reservation.
@@ -14,7 +15,7 @@ import java.time.LocalDate;
  * @author Christian Ariel Modesto Duarte <duarte.camd@gmail.com>
  * @version 1.0.0-SNAPSHOT
  */
-public class Reserve {
+public abstract class Reserve {
 	private Integer id;
 	private LocalDate checkinDate;
 	private LocalDate checkoutDate;
@@ -75,5 +76,20 @@ public class Reserve {
 	public String toString() {
 		return String.format("{'id': %d, checkinDate: %s, checkoutDate: %s, value: %f, paymentMethod: %s}", this.id,
 				this.checkinDate.toString(), this.checkoutDate.toString(), this.value, this.paymentMethod);
+	}
+
+	/**
+	 * Calculates the reservation value.
+	 * @return The reservation value.
+	 */
+	public static BigDecimal calculateValue(LocalDate checkin, LocalDate checkout) {
+		if (checkout.compareTo(checkin) > 0) {
+			BigDecimal valuePerDay = new BigDecimal(3000D);
+			BigDecimal days = new BigDecimal(ChronoUnit.DAYS.between(checkin, checkout));
+			return valuePerDay.multiply(days);
+		} else {
+			System.out.println("Check-out date must be greather than check-in date.");
+			return null;
+		}
 	}
 }
