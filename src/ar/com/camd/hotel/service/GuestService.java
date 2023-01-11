@@ -23,10 +23,17 @@ public interface GuestService {
 	 * @return The guests.
 	 */
 	public List<Guest> getAll();
-	
+
 	/**
 	 * Gets guests by last name.
 	 * @return The guests.
 	 */
 	public List<Guest> getByLastName(String lastName);
+
+	/**
+	 * Gets guests by reserve id.
+	 * @param reserveId The reserve id.
+	 * @return The guest.
+	 */
+	public Guest getByReserveId(Integer reserveId);
 }

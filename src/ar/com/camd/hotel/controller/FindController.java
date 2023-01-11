@@ -57,4 +57,13 @@ public class FindController {
 	public List<Guest> getByLastName(String lastName) {
 		return this.guestService.getByLastName(lastName);
 	}
+
+	/**
+	 * Gets guests by reserve id.
+	 * @param reserveId The reserve id.
+	 * @return The guest.
+	 */
+	public Guest getByReserveId(Integer reserveId) {
+		return this.guestService.getByReserveId(reserveId);
+	}
 }

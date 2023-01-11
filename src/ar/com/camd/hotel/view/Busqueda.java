@@ -26,11 +26,12 @@ import javax.swing.table.DefaultTableModel;
 
 import ar.com.camd.hotel.controller.FindController;
 import ar.com.camd.hotel.model.Guest;
-import ar.com.camd.hotel.model.Reserve;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
 
+	private FindController findController;
+	
 	private JPanel contentPane;
 	private JTextField txtBuscar;
 	private JTable tbHuespedes;
@@ -61,6 +62,8 @@ public class Busqueda extends JFrame {
 	 * Create the frame.
 	 */
 	public Busqueda() {
+		this.findController = new FindController();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("../img/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
@@ -102,20 +105,6 @@ public class Busqueda extends JFrame {
 		modelo.addColumn("Valor");
 		modelo.addColumn("Forma de Pago");
 
-		// Fills the reservation table with information.
-		FindController findController = new FindController();
-	 	List<Reserve> reservations = findController.getReservations();
-
-	 	reservations.forEach(reserve -> {
-	 		modelo.addRow(new Object[] {
-	 				reserve.getId(),
-	 				reserve.getCheckinDate(),
-	 				reserve.getCheckoutDate(),
-	 				reserve.getValue(),
-	 				reserve.getPaymentMethod()
-	 		});
-	 	});
-
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
@@ -128,20 +117,6 @@ public class Busqueda extends JFrame {
 		modeloH.addColumn("Nacionalidad");
 		modeloH.addColumn("Telefono");
 		modeloH.addColumn("Numero de Reserva");
-
-		// Fills the guest table with information.
-	 	List<Guest> guests = findController.getGuests();
-	 	guests.forEach(guest -> {
-	 		modeloH.addRow(new Object[] {
-	 				guest.getId(),
-	 				guest.getName(),
-	 				guest.getLastname(),
-	 				guest.getBirthdate(),
-	 				guest.getNationality(),
-	 				guest.getPhoneNumber(),
-	 				guest.getReserve().getId()
-	 		});
-	 	});
 
 		JLabel lblNewLabel_2 = new JLabel("");
 		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("../img/Ha-100px.png")));
@@ -245,6 +220,24 @@ public class Busqueda extends JFrame {
 				String searchTerm = txtBuscar.getText();
 				System.out.println(searchTerm);
 				if (isDigit(searchTerm)) {
+					Guest guest = findController.getByReserveId(Integer.valueOf(searchTerm));
+			 		modeloH.addRow(new Object[] {
+			 				guest.getId(),
+			 				guest.getName(),
+			 				guest.getLastname(),
+			 				guest.getBirthdate(),
+			 				guest.getNationality(),
+			 				guest.getPhoneNumber(),
+			 				guest.getReserve().getId()
+			 		});
+			 		
+			 		modelo.addRow(new Object[] {
+			 				guest.getReserve().getId(),
+			 				guest.getReserve().getCheckinDate(),
+			 				guest.getReserve().getCheckoutDate(),
+			 				guest.getReserve().getValue(),
+			 				guest.getReserve().getPaymentMethod()
+			 		});
 				} else {
 					List<Guest> guests = findController.getByLastName(searchTerm);
 				 	guests.forEach(guest -> {
