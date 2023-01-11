@@ -82,7 +82,7 @@ public class GuestDao implements Dao<Guest> {
 	private final String QRY_REMOVE = "DELETE FROM hotel.guest WHERE id = ?";
 	
 	private final String QRY_UPDATE = "UPDATE guest SET name = ?, lastname = ?, "
-			+ "birthdate = ?, phone_number = ? WHERE id = ?";
+			+ "birthdate = ?, nationality = ?, phone_number = ? WHERE id = ?";
 	
 	/**
 	 * @param con The data base connection.
@@ -145,9 +145,7 @@ public class GuestDao implements Dao<Guest> {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_REMOVE);
 			try (preparedStatement) {
 				preparedStatement.setInt(1, id);
-				preparedStatement.execute();
-			
-				int updateCount = preparedStatement.getUpdateCount();
+				int updateCount = preparedStatement.executeUpdate();
 				System.out.printf("Cantidad de registros eliminados: %d%n", updateCount);
 				return updateCount;
 			}
@@ -240,17 +238,18 @@ public class GuestDao implements Dao<Guest> {
 	 * @return The guest amount updated.
 	 */
 	public Integer update(Guest guest) {
+		System.out.println(guest);
 		try {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_UPDATE);
 			try(preparedStatement) {
-				preparedStatement.setInt(1, guest.getId());
-				preparedStatement.setString(2, guest.getName());
-				preparedStatement.setString(3, guest.getLastname());
-				preparedStatement.setDate(4, Date.valueOf(guest.getBirthdate()));
-				preparedStatement.setString(5, guest.getNationality().name());
-				preparedStatement.setString(6, guest.getPhoneNumber());
+				preparedStatement.setString(1, guest.getName());
+				preparedStatement.setString(2, guest.getLastname());
+				preparedStatement.setDate(3, Date.valueOf(guest.getBirthdate()));
+				preparedStatement.setString(4, guest.getNationality().name());
+				preparedStatement.setString(5, guest.getPhoneNumber());
+				preparedStatement.setInt(6, guest.getId());
 				
-				int updateCount = preparedStatement.getUpdateCount();
+				int updateCount = preparedStatement.executeUpdate();
 				System.out.printf("Cantidad de registros modificados: %d%n", updateCount);
 				return updateCount;
 			}

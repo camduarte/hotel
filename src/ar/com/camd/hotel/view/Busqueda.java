@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -29,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
 
 import ar.com.camd.hotel.controller.FindController;
 import ar.com.camd.hotel.model.Guest;
+import ar.com.camd.hotel.model.Nationality;
 
 @SuppressWarnings("serial")
 public class Busqueda extends JFrame {
@@ -277,6 +279,44 @@ public class Busqueda extends JFrame {
 		lblEditar.setBounds(0, 0, 122, 35);
 		btnEditar.add(lblEditar);
 
+		btnEditar.addMouseListener(new MouseListener() {
+			
+			@Override
+			public void mouseReleased(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseExited(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+			
+			@Override
+			public void mouseEntered(MouseEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				if (tbHuespedes.getSelectedRow() != -1) {
+					updateGuest();
+				} else if (tbReservas.getSelectedRow() != -1) {
+//					removeReserve();	
+				} else {
+					showMsgSelectItem();
+				}
+			}
+		});
+
 		JPanel btnEliminar = new JPanel();
 		btnEliminar.setLayout(null);
 		btnEliminar.setBackground(new Color(12, 138, 199));
@@ -406,5 +446,26 @@ public class Busqueda extends JFrame {
 	 */
 	private void showMsgSelectItem() {
 		JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+	}
+
+	/**
+	 * Updates the guest.
+	 */
+	protected void updateGuest() {
+		Optional.ofNullable(modelo.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
+		.ifPresentOrElse(fila -> {
+
+			Integer id = (Integer) modeloH.getValueAt(tbHuespedes.getSelectedRow(), 0);
+			String name = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 1).toString();
+			String lastName = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 2).toString();
+			LocalDate birthDate = LocalDate.parse(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 3).toString());
+			Nationality nationality = Nationality.valueOf(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 4).toString());
+			String phoneNumber = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 5).toString();
+
+			Guest guest = new Guest(id, name, lastName, birthDate, nationality, phoneNumber);
+			Integer guestUpdated = this.findController.update(guest);
+
+			JOptionPane.showMessageDialog(this, guestUpdated + " item actualizado con éxito!");
+		}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
 	}
 }

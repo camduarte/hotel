@@ -84,4 +84,13 @@ public class FindController {
 	public Integer removeReserve(Integer id) {
 		return this.reserveService.remove(id);
 	}
+
+	/**
+	 * Updates the guest.
+	 * @param guest The guest.
+	 * @return The guests amount updated.
+	 */
+	public Integer update(Guest guest) {
+		return this.guestService.update(guest);
+	}
 }
