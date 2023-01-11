@@ -23,5 +23,11 @@ public interface ReserveService {
 	 * @return The reservations.
 	 */
 	public List<Reserve> getAll();
-	
+
+	/**
+	 * Removes the reserve by id.
+	 * @param id The reserve id.
+	 * @return The reservations amount removed.
+	 */
+	public Integer remove(Integer id);
 }

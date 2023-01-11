@@ -44,4 +44,9 @@ public class GuestServiceImpl implements GuestService {
 		return this.guestDao.findByReserveId(reserveId);
 	}
 
+	@Override
+	public Integer remove(Integer id) {
+		return this.guestDao.remove(id);
+	}
+
 }

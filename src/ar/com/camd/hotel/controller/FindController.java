@@ -66,4 +66,22 @@ public class FindController {
 	public Guest getByReserveId(Integer reserveId) {
 		return this.guestService.getByReserveId(reserveId);
 	}
+
+	/**
+	 * Removes the guest by id.
+	 * @param id The guest id.
+	 * @return The guests amount removed.
+	 */
+	public Integer removeGuest(Integer id) {
+		return this.guestService.remove(id);
+	}
+
+	/**
+	 * Removes the reserve by id.
+	 * @param id The reserve id.
+	 * @return The reservations amount removed.
+	 */
+	public Integer removeReserve(Integer id) {
+		return this.reserveService.remove(id);
+	}
 }

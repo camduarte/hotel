@@ -78,6 +78,8 @@ public class GuestDao implements Dao<Guest> {
 			+ "ON g.id = r.id "
 			+ "AND g.id_reserve = ?";
 
+	private final String QRY_REMOVE = "DELETE FROM hotel.guest WHERE id = ?";
+
 	/**
 	 * @param con The data base connection.
 	 */
@@ -129,9 +131,25 @@ public class GuestDao implements Dao<Guest> {
 		return null;
 	}
 
-	@Override
-	public void remove(Guest t) {
-		// TODO Auto-generated method stub
+	/**
+	 * Removes the guest by id.
+	 * @param id The guest id.
+	 * @return The guests amount removed.
+	 */
+	public Integer remove(Integer id) {
+		try {
+			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_REMOVE);
+			try (preparedStatement) {
+				preparedStatement.setInt(1, id);
+				preparedStatement.execute();
+			
+				int updateCount = preparedStatement.getUpdateCount();
+				System.out.printf("Cantidad de registros eliminados: %d%n", updateCount);
+				return updateCount;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	/**
@@ -205,5 +223,10 @@ public class GuestDao implements Dao<Guest> {
 			e.printStackTrace();
 		}
 		return guest;
+	}
+
+	@Override
+	public void remove(Guest t) {
+		// TODO Auto-generated method stub
 	}
 }

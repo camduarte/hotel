@@ -9,7 +9,7 @@ CREATE TABLE reserve (
 	value DECIMAL(15,2) NOT NULL,
 	payment_method VARCHAR(50),
 	PRIMARY KEY(id)
-)ENGINE=INNODB;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 CREATE TABLE guest (
@@ -21,7 +21,7 @@ CREATE TABLE guest (
 	phone_number VARCHAR(50) NOT NULL,
 	id_reserve INT NOT NULL,
 	PRIMARY KEY(id)
-)ENGINE=INNODB;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE employee (
 	id INT NOT NULL AUTO_INCREMENT,
@@ -30,6 +30,6 @@ CREATE TABLE employee (
 	email VARCHAR(50) NOT NULL,
 	password VARCHAR(50) NOT NULL,
 	PRIMARY KEY(id)
-)ENGINE=INNODB;
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-ALTER TABLE hotel.guest ADD FOREIGN KEY (id_reserve) REFERENCES hotel.reserve(id);
+ALTER TABLE hotel.guest ADD FOREIGN KEY (id_reserve) REFERENCES hotel.reserve(id) ON DELETE CASCADE;

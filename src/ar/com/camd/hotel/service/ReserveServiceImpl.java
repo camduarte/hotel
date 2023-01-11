@@ -34,4 +34,9 @@ public class ReserveServiceImpl implements ReserveService {
 		return this.reserveDao.findAll();
 	}
 
+	@Override
+	public Integer remove(Integer id) {
+		return this.reserveDao.remove(id);
+	}
+
 }

@@ -26,6 +26,8 @@ public class ReserveDao implements Dao<Reserve> {
 
 	private final String QRY_FIND_ALL = "SELECT id, checkin_date, checkout_date, value, payment_method FROM hotel.reserve";
 
+	private final String QRY_REMOVE = "DELETE FROM hotel.reserve WHERE id = ?";
+	
 	/**
 	 * @param con The data base connection.
 	 */
@@ -71,6 +73,27 @@ public class ReserveDao implements Dao<Reserve> {
 	public void remove(Reserve t) {
 		// TODO Auto-generated method stub
 
+	}
+	
+	/**
+	 * Removes the reserve by id.
+	 * @param id The reserve id.
+	 * @return The reservations amount removed.
+	 */
+	public Integer remove(Integer id) {
+		try {
+			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_REMOVE);
+			try (preparedStatement) {
+				preparedStatement.setInt(1, id);
+				preparedStatement.execute();
+			
+				int updateCount = preparedStatement.getUpdateCount();
+				System.out.printf("Cantidad de registros eliminados: %d%n", updateCount);
+				return updateCount;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 }
