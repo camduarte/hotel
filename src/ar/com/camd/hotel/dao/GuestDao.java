@@ -6,6 +6,7 @@
 package ar.com.camd.hotel.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -77,9 +78,12 @@ public class GuestDao implements Dao<Guest> {
 			+ "INNER JOIN reserve AS r "
 			+ "ON g.id = r.id "
 			+ "AND g.id_reserve = ?";
-
+	
 	private final String QRY_REMOVE = "DELETE FROM hotel.guest WHERE id = ?";
-
+	
+	private final String QRY_UPDATE = "UPDATE guest SET name = ?, lastname = ?, "
+			+ "birthdate = ?, phone_number = ? WHERE id = ?";
+	
 	/**
 	 * @param con The data base connection.
 	 */
@@ -228,5 +232,30 @@ public class GuestDao implements Dao<Guest> {
 	@Override
 	public void remove(Guest t) {
 		// TODO Auto-generated method stub
+	}
+	
+	/**
+	 * Updates the guest.
+	 * @param guest The guest.
+	 * @return The guest amount updated.
+	 */
+	public Integer update(Guest guest) {
+		try {
+			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_UPDATE);
+			try(preparedStatement) {
+				preparedStatement.setInt(1, guest.getId());
+				preparedStatement.setString(2, guest.getName());
+				preparedStatement.setString(3, guest.getLastname());
+				preparedStatement.setDate(4, Date.valueOf(guest.getBirthdate()));
+				preparedStatement.setString(5, guest.getNationality().name());
+				preparedStatement.setString(6, guest.getPhoneNumber());
+				
+				int updateCount = preparedStatement.getUpdateCount();
+				System.out.printf("Cantidad de registros modificados: %d%n", updateCount);
+				return updateCount;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

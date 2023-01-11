@@ -44,6 +44,24 @@ public class Guest {
 	}
 
 	/**
+	 * @param id The identification number.
+	 * @param name The guest name
+	 * @param lastName The guest last name.
+	 * @param birthDate The guest birth date.
+	 * @param nationality The guest nationality.
+	 * @param phoneNumber The guest phone number.
+	 */
+	public Guest(Integer id, String name, String lastName, LocalDate birthDate, Nationality nationality,
+			String phoneNumber) {
+		this.id = id;
+		this.name = name;
+		this.lastname = lastName;
+		this.birthdate = birthDate;
+		this.nationality = nationality;
+		this.phoneNumber = phoneNumber;
+	}
+
+	/**
 	 * @return the id
 	 */
 	public Integer getId() {
