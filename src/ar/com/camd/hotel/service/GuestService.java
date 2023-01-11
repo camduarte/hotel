@@ -5,8 +5,6 @@
  */
 package ar.com.camd.hotel.service;
 
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.List;
 
 import ar.com.camd.hotel.model.Guest;
@@ -45,4 +43,11 @@ public interface GuestService {
 	 * @return The guests amount removed.
 	 */
 	public Integer remove(Integer id);
+
+	/**
+	 * Updates the guest.
+	 * @param guest The guest.
+	 * @return The guests amount updated.
+	 */
+	public Integer update(Guest guest);
 }

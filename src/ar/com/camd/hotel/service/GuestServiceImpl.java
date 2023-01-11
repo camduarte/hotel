@@ -49,4 +49,9 @@ public class GuestServiceImpl implements GuestService {
 		return this.guestDao.remove(id);
 	}
 
+	@Override
+	public Integer update(Guest guest) {
+		return this.guestDao.update(guest);
+	}
+
 }

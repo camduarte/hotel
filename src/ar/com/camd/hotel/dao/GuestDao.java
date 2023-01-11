@@ -233,7 +233,7 @@ public class GuestDao implements Dao<Guest> {
 	public void remove(Guest t) {
 		// TODO Auto-generated method stub
 	}
-	
+
 	/**
 	 * Updates the guest.
 	 * @param guest The guest.
