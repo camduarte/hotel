@@ -6,6 +6,7 @@
 
 package ar.com.camd.hotel.controller;
 
+import ar.com.camd.hotel.model.Guest;
 import ar.com.camd.hotel.service.GuestService;
 import ar.com.camd.hotel.service.GuestServiceImpl;
 
@@ -18,11 +19,20 @@ import ar.com.camd.hotel.service.GuestServiceImpl;
  */
 public class GuestController {
 	private GuestService guestService;
-	
+
 	/**
 	 * Initialize the guest service.
 	 */
 	public GuestController() {
 		this.guestService = new GuestServiceImpl();
+	}
+
+	/**
+	 * Saves the guest.
+	 * 
+	 * @param guest The guest.
+	 */
+	public Guest save(Guest guest) {
+		return this.guestService.save(guest);
 	}
 }
