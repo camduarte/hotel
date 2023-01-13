@@ -27,7 +27,7 @@ import ar.com.camd.hotel.model.Reserve;
  */
 public class GuestDao implements Dao<Guest> {
 
-	private Connection con;
+	private final Connection con;
 
 	private final String QRY_FIND_ALL = "SELECT "
 			+ "g.id, "
@@ -84,6 +84,10 @@ public class GuestDao implements Dao<Guest> {
 	private final String QRY_UPDATE = "UPDATE guest SET name = ?, lastname = ?, "
 			+ "birthdate = ?, nationality = ?, phone_number = ? WHERE id = ?";
 	
+	private final String QRY_SAVE = "INSERT INTO hote.guest "
+			+ "(name, lastname, birthdate, nationality, phone_number, id_reserve) "
+			+ "VALUES (?, ?, ?, ?, ?, ?)";
+	
 	/**
 	 * @param con The data base connection.
 	 */
@@ -92,9 +96,34 @@ public class GuestDao implements Dao<Guest> {
 	}
 
 	@Override
-	public Guest save(Guest t) {
-		// TODO Auto-generated method stub
-		return null;
+	public Guest save(Guest guest) {
+		try(this.con) {
+			final PreparedStatement preparedStatement = 
+					this.con.prepareStatement(QRY_SAVE,
+							PreparedStatement.RETURN_GENERATED_KEYS);
+			try(preparedStatement) {
+				preparedStatement.setString(1, guest.getName());
+				preparedStatement.setString(2, guest.getLastname());
+				preparedStatement.setDate(3, Date.valueOf(guest.getBirthdate()));
+				preparedStatement.setString(4, guest.getNationality().name());
+				preparedStatement.setString(5, guest.getPhoneNumber());
+				preparedStatement.setInt(6, guest.getReserve().getId());
+				preparedStatement.executeUpdate();
+
+				final ResultSet resultSet = preparedStatement.getGeneratedKeys();
+				try(resultSet) {
+					if (resultSet.next()) {
+						guest.setId(resultSet.getInt(1));
+						return guest;
+					} else {
+						System.out.printf("We can't get guest id. %n%s%n", guest);
+					}
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+		return guest;
 	}
 
 	@Override
