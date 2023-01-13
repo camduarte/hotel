@@ -39,8 +39,9 @@ import ar.com.camd.hotel.service.ReserveService;
 import ar.com.camd.hotel.service.ReserveServiceImpl;
 
 @SuppressWarnings("serial")
-public class ReservasView extends JFrame {
+public class ReserveView extends JFrame {
 
+	private static final String MSG_WRONG_DATES = "¡La fecha de salida debe ser mas grande que la fecha de entrada!";
 	private static final String IMG_ICON_RESERVAS_PNG = "../img/icon-reservas.png";
 	private static final String IMG_A_H_40PX_PNG = "../img/aH-40px.png";
 	private static final String IMG_RESERVAS_IMG_3_PNG = "../img/reservas-img-3.png";
@@ -65,7 +66,7 @@ public class ReservasView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ReservasView frame = new ReservasView();
+					ReserveView frame = new ReserveView();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -77,12 +78,12 @@ public class ReservasView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ReservasView() {
+	public ReserveView() {
 		super("Reserva");
 
 		this.reserveService = new ReserveServiceImpl();
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource(IMG_A_H_40PX_PNG)));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ReserveView.class.getResource(IMG_A_H_40PX_PNG)));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 560);
 		setResizable(false);
@@ -123,7 +124,7 @@ public class ReservasView extends JFrame {
 		txtFechaE = new JDateChooser();
 		txtFechaE.getCalendarButton().setBackground(SystemColor.textHighlight);
 		txtFechaE.getCalendarButton()
-				.setIcon(new ImageIcon(ReservasView.class.getResource(IMG_ICON_RESERVAS_PNG)));
+				.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_ICON_RESERVAS_PNG)));
 		txtFechaE.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 12));
 		txtFechaE.setBounds(68, 161, 289, 35);
 		txtFechaE.getCalendarButton().setBounds(268, 0, 21, 33);
@@ -168,7 +169,7 @@ public class ReservasView extends JFrame {
 
 		txtFechaS = new JDateChooser();
 		txtFechaS.getCalendarButton()
-				.setIcon(new ImageIcon(ReservasView.class.getResource(IMG_ICON_RESERVAS_PNG)));
+				.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_ICON_RESERVAS_PNG)));
 		txtFechaS.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 11));
 		txtFechaS.setBounds(68, 246, 289, 35);
 		txtFechaS.getCalendarButton().setBounds(267, 1, 21, 31);
@@ -256,13 +257,13 @@ public class ReservasView extends JFrame {
 		JLabel logo = new JLabel("");
 		logo.setBounds(197, 68, 104, 107);
 		panel1.add(logo);
-		logo.setIcon(new ImageIcon(ReservasView.class.getResource(IMG_HA_100PX_PNG)));
+		logo.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_HA_100PX_PNG)));
 
 		JLabel imagenFondo = new JLabel("");
 		imagenFondo.setBounds(0, 140, 500, 409);
 		panel1.add(imagenFondo);
 		imagenFondo.setBackground(Color.WHITE);
-		imagenFondo.setIcon(new ImageIcon(ReservasView.class.getResource(IMG_RESERVAS_IMG_3_PNG)));
+		imagenFondo.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_RESERVAS_IMG_3_PNG)));
 
 		JPanel btnexit = new JPanel();
 		btnexit.addMouseListener(new MouseAdapter() {
@@ -413,7 +414,8 @@ public class ReservasView extends JFrame {
 	 * Show message wrong dates.
 	 */
 	private void showMsgWrongDates() {
-		JOptionPane.showMessageDialog(this, "¡La fecha de salida debe ser mas grande que la fecha de entrada!", "Fecha incorrecta", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, MSG_WRONG_DATES, "Fecha incorrecta", \
+				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
 	/**

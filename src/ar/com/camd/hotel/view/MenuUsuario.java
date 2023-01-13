@@ -96,7 +96,7 @@ public class MenuUsuario extends JFrame {
 			}
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReservasView reservas = new ReservasView();
+				ReserveView reservas = new ReserveView();
 				reservas.setVisible(true);
 				dispose();
 			}
