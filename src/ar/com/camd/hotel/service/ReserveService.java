@@ -34,6 +34,13 @@ public interface ReserveService {
 	public Integer remove(Integer id);
 	
 	/**
+    * Saves the reserve.
+    * 
+    * @param reserve The reserve.
+    */
+	public Reserve save(Reserve reserve);
+	
+	/**
 	 * Calculates the reservation value.
 	 * @return The reservation value.
 	 */

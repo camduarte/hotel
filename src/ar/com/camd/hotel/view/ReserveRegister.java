@@ -33,13 +33,12 @@ import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import ar.com.camd.hotel.controller.ReserveController;
 import ar.com.camd.hotel.model.PaymentMethod;
 import ar.com.camd.hotel.model.Reserve;
-import ar.com.camd.hotel.service.ReserveService;
-import ar.com.camd.hotel.service.ReserveServiceImpl;
 
 @SuppressWarnings("serial")
-public class ReserveView extends JFrame {
+public class ReserveRegister extends JFrame {
 
 	private static final String MSG_WRONG_DATES = "¡La fecha de salida debe ser mas grande que la fecha de entrada!";
 	private static final String IMG_ICON_RESERVAS_PNG = "../img/icon-reservas.png";
@@ -47,7 +46,7 @@ public class ReserveView extends JFrame {
 	private static final String IMG_RESERVAS_IMG_3_PNG = "../img/reservas-img-3.png";
 	private static final String IMG_HA_100PX_PNG = "../img/Ha-100px.png";
 
-	private ReserveService reserveService;
+	private ReserveController reserveController;
 
 	private JPanel contentPane;
 	public static JTextField txtValor;
@@ -66,7 +65,7 @@ public class ReserveView extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ReserveView frame = new ReserveView();
+					ReserveRegister frame = new ReserveRegister();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -78,12 +77,11 @@ public class ReserveView extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ReserveView() {
+	public ReserveRegister() {
 		super("Reserva");
+		this.reserveController = new ReserveController();
 
-		this.reserveService = new ReserveServiceImpl();
-
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ReserveView.class.getResource(IMG_A_H_40PX_PNG)));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ReserveRegister.class.getResource(IMG_A_H_40PX_PNG)));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 560);
 		setResizable(false);
@@ -124,7 +122,7 @@ public class ReserveView extends JFrame {
 		txtFechaE = new JDateChooser();
 		txtFechaE.getCalendarButton().setBackground(SystemColor.textHighlight);
 		txtFechaE.getCalendarButton()
-				.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_ICON_RESERVAS_PNG)));
+				.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_ICON_RESERVAS_PNG)));
 		txtFechaE.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 12));
 		txtFechaE.setBounds(68, 161, 289, 35);
 		txtFechaE.getCalendarButton().setBounds(268, 0, 21, 33);
@@ -169,7 +167,7 @@ public class ReserveView extends JFrame {
 
 		txtFechaS = new JDateChooser();
 		txtFechaS.getCalendarButton()
-				.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_ICON_RESERVAS_PNG)));
+				.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_ICON_RESERVAS_PNG)));
 		txtFechaS.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 11));
 		txtFechaS.setBounds(68, 246, 289, 35);
 		txtFechaS.getCalendarButton().setBounds(267, 1, 21, 31);
@@ -257,13 +255,13 @@ public class ReserveView extends JFrame {
 		JLabel logo = new JLabel("");
 		logo.setBounds(197, 68, 104, 107);
 		panel1.add(logo);
-		logo.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_HA_100PX_PNG)));
+		logo.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_HA_100PX_PNG)));
 
 		JLabel imagenFondo = new JLabel("");
 		imagenFondo.setBounds(0, 140, 500, 409);
 		panel1.add(imagenFondo);
 		imagenFondo.setBackground(Color.WHITE);
-		imagenFondo.setIcon(new ImageIcon(ReserveView.class.getResource(IMG_RESERVAS_IMG_3_PNG)));
+		imagenFondo.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_RESERVAS_IMG_3_PNG)));
 
 		JPanel btnexit = new JPanel();
 		btnexit.addMouseListener(new MouseAdapter() {
@@ -374,6 +372,7 @@ public class ReserveView extends JFrame {
 					BigDecimal reserveValue = new BigDecimal(sReserveValue);
 					PaymentMethod paymentMethod = PaymentMethod.findByDescription(sPaymentMethod);
 					Reserve reserve = new Reserve(checkinDate, checkoutDate, reserveValue, paymentMethod);
+					reserve = reserveController.save(reserve);
 					System.out.println(reserve);
 
 					GuestRegister registro = new GuestRegister(reserve);
@@ -429,7 +428,7 @@ public class ReserveView extends JFrame {
 			LocalDate checkoutDate = LocalDate.ofInstant(dateOut.toInstant(), ZoneId.systemDefault());
 			System.out.printf("checkinDate<%s>, checkoutDate<%s>%n", checkinDate, checkoutDate);
 
-			BigDecimal reserveValue = reserveService.calculateValue(checkinDate, checkoutDate);
+			BigDecimal reserveValue = reserveController.calculateValue(checkinDate, checkoutDate);
 			if (reserveValue == null) {
 				showMsgWrongDates();
 				txtFechaE.setDate(null);

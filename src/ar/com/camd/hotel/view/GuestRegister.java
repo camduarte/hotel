@@ -8,6 +8,8 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
@@ -24,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import ar.com.camd.hotel.model.Guest;
 import ar.com.camd.hotel.model.Nationality;
 import ar.com.camd.hotel.model.Reserve;
 
@@ -97,7 +100,7 @@ public class GuestRegister extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				ReserveView reservas = new ReserveView();
+				ReserveRegister reservas = new ReserveRegister();
 				reservas.setVisible(true);
 				dispose();
 			}
@@ -213,6 +216,7 @@ public class GuestRegister extends JFrame {
 		txtReservationNumber.setColumns(10);
 		txtReservationNumber.setBackground(Color.WHITE);
 		txtReservationNumber.setBorder(javax.swing.BorderFactory.createEmptyBorder());
+		txtReservationNumber.setText(reserve.getId().toString());
 		contentPane.add(txtReservationNumber);
 
 		JSeparator separator_1_2 = new JSeparator();
@@ -259,14 +263,20 @@ public class GuestRegister extends JFrame {
 				// TODO Implement button save guest.
 				String name = txtName.getText();
 				String lastName = txtLastName.getText();
-				Date birthDate = txtFechaN.getDate();
+				Date dBirthDate = txtFechaN.getDate();
 				Nationality nationality = (Nationality) txtNationality.getSelectedItem();
 				String phoneNumber = txtPhoneNumber.getText();
-				String reservationNumber = txtReservationNumber.getText();
+				String sReservationNumber = txtReservationNumber.getText();
 
-				if (name != null && lastName != null && birthDate != null && nationality != null && phoneNumber != null
-						&& reservationNumber != null) {
-
+				if (name != null && lastName != null && dBirthDate != null && 
+						nationality != null && phoneNumber != null && 
+						sReservationNumber != null) {
+					
+						LocalDate birthDate = LocalDate.ofInstant(
+								dBirthDate.toInstant(), ZoneId.systemDefault());
+						Integer reservationNumber = Integer.valueOf(sReservationNumber);
+						
+						Guest guest = new Guest(name, lastName, birthDate, nationality, phoneNumber, reserve);
 				} else {
 					showMsgFieldsUncompleted();
 				}

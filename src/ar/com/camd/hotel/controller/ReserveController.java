@@ -8,6 +8,7 @@ package ar.com.camd.hotel.controller;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import ar.com.camd.hotel.model.Reserve;
 import ar.com.camd.hotel.service.ReserveService;
 import ar.com.camd.hotel.service.ReserveServiceImpl;
 
@@ -34,5 +35,14 @@ public class ReserveController {
 	 */
 	public BigDecimal calculateValue(LocalDate checkin, LocalDate checkout) {
 		return this.reserveService.calculateValue(checkin, checkout);
+	}
+	
+	/**
+    * Saves the reserve.
+    * 
+    * @param reserve The reserve.
+    */
+	public Reserve save(Reserve reserve) {
+		return this.reserveService.save(reserve);
 	}
 }

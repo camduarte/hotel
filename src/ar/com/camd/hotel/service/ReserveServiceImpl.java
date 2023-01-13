@@ -46,4 +46,9 @@ public class ReserveServiceImpl implements ReserveService {
 		return Reserve.calculateValue(checkin, checkout);
 	}
 
+	@Override
+	public Reserve save(Reserve reserve) {
+		return this.reserveDao.save(reserve);
+	}
+
 }
