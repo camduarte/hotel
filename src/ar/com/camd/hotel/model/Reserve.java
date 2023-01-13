@@ -38,6 +38,19 @@ public final class Reserve {
 	}
 
 	/**
+	 * @param checkinDate The check in date.
+	 * @param checkoutDate The check out date
+	 * @param value The reservation value.
+	 * @param paymentMethod The payment method.
+	 */
+	public Reserve(LocalDate checkinDate, LocalDate checkoutDate, BigDecimal value, PaymentMethod paymentMethod) {
+		this.checkinDate = checkinDate;
+		this.checkoutDate = checkoutDate;
+		this.value = value;
+		this.paymentMethod = paymentMethod;
+	}
+
+	/**
 	 * @return the id
 	 */
 	public Integer getId() {
