@@ -272,9 +272,9 @@ public class GuestRegister extends JFrame {
 				String phoneNumber = txtPhoneNumber.getText();
 				String sReservationNumber = txtReservationNumber.getText();
 
-				if (name != null && lastName != null && dBirthDate != null && 
-						nationality != null && phoneNumber != null && 
-						sReservationNumber != null) {
+				if (name != "" && lastName != "" && dBirthDate != null && 
+						nationality != null && phoneNumber != "" && 
+						sReservationNumber != "") {
 
 						LocalDate birthDate = LocalDate.ofInstant(
 								dBirthDate.toInstant(), ZoneId.systemDefault());
@@ -283,6 +283,8 @@ public class GuestRegister extends JFrame {
 								nationality, phoneNumber, reserve);
 						guest = guestController.save(guest);
 						System.out.println(guest);
+						dispose(); // Close the current view.
+						new Success().setVisible(true); // Go to success view.
 				} else {
 					showMsgFieldsUncompleted();
 				}

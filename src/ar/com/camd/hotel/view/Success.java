@@ -17,7 +17,7 @@ import java.awt.SystemColor;
 import java.awt.Toolkit;
 
 @SuppressWarnings("serial")
-public class Exito extends JDialog {
+public class Success extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 
@@ -26,7 +26,7 @@ public class Exito extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			Exito dialog = new Exito();
+			Success dialog = new Success();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -37,8 +37,8 @@ public class Exito extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public Exito() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Exito.class.getResource("../img/aH-40px.png")));
+	public Success() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Success.class.getResource("../img/aH-40px.png")));
 		setBounds(100, 100, 394, 226);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBackground(SystemColor.control);
@@ -48,13 +48,13 @@ public class Exito extends JDialog {
 		contentPanel.setLayout(null);
 		{
 			JLabel lblNewLabel = new JLabel("");
-			lblNewLabel.setIcon(new ImageIcon(Exito.class.getResource("../img/Ha-100px.png")));
+			lblNewLabel.setIcon(new ImageIcon(Success.class.getResource("../img/Ha-100px.png")));
 			lblNewLabel.setBounds(123, 11, 100, 100);
 			contentPanel.add(lblNewLabel);
 		}
 		{
 			JLabel lblNewLabel_1 = new JLabel("Datos guardados satisfactoriamente");
-			lblNewLabel_1.setForeground(new Color (12, 138, 199));
+			lblNewLabel_1.setForeground(new Color(12, 138, 199));
 			lblNewLabel_1.setFont(new Font("Arial", Font.BOLD, 18));
 			lblNewLabel_1.setBounds(27, 122, 322, 21);
 			contentPanel.add(lblNewLabel_1);
@@ -67,8 +67,8 @@ public class Exito extends JDialog {
 				JButton okButton = new JButton("OK");
 				okButton.addActionListener(new ActionListener() {
 					public void actionPerformed(ActionEvent e) {
-						dispose();//sirve para cerrar la ventana actual
-						MenuUsuario usuario = new MenuUsuario(); 
+						dispose();// sirve para cerrar la ventana actual
+						MenuUsuario usuario = new MenuUsuario();
 						usuario.setVisible(true);
 					}
 				});
