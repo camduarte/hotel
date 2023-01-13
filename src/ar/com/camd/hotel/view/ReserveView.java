@@ -414,7 +414,7 @@ public class ReserveView extends JFrame {
 	 * Show message wrong dates.
 	 */
 	private void showMsgWrongDates() {
-		JOptionPane.showMessageDialog(this, MSG_WRONG_DATES, "Fecha incorrecta", \
+		JOptionPane.showMessageDialog(this, MSG_WRONG_DATES, "Fecha incorrecta",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
 	
