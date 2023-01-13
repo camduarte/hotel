@@ -54,4 +54,9 @@ public class GuestServiceImpl implements GuestService {
 		return this.guestDao.update(guest);
 	}
 
+	@Override
+	public Guest save(Guest guest) {
+		return this.guestDao.save(guest);
+	}
+
 }

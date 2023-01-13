@@ -50,4 +50,11 @@ public interface GuestService {
 	 * @return The guests amount updated.
 	 */
 	public Integer update(Guest guest);
+
+	/**
+	 * Saves the guest.
+	 * 
+	 * @param guest The guest.
+	 */
+	public Guest save(Guest guest);
 }
