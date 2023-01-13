@@ -81,10 +81,10 @@ public class GuestDao implements Dao<Guest> {
 	
 	private final String QRY_REMOVE = "DELETE FROM hotel.guest WHERE id = ?";
 	
-	private final String QRY_UPDATE = "UPDATE guest SET name = ?, lastname = ?, "
+	private final String QRY_UPDATE = "UPDATE hotel.guest SET name = ?, lastname = ?, "
 			+ "birthdate = ?, nationality = ?, phone_number = ? WHERE id = ?";
 	
-	private final String QRY_SAVE = "INSERT INTO hote.guest "
+	private final String QRY_SAVE = "INSERT INTO hotel.guest "
 			+ "(name, lastname, birthdate, nationality, phone_number, id_reserve) "
 			+ "VALUES (?, ?, ?, ?, ?, ?)";
 	

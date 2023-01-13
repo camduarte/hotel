@@ -26,6 +26,7 @@ import javax.swing.border.EmptyBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import ar.com.camd.hotel.controller.GuestController;
 import ar.com.camd.hotel.model.Guest;
 import ar.com.camd.hotel.model.Nationality;
 import ar.com.camd.hotel.model.Reserve;
@@ -33,6 +34,8 @@ import ar.com.camd.hotel.model.Reserve;
 @SuppressWarnings("serial")
 public class GuestRegister extends JFrame {
 
+	private GuestController guestController;
+	
 	private JPanel contentPane;
 	private JTextField txtName;
 	private JTextField txtLastName;
@@ -64,6 +67,8 @@ public class GuestRegister extends JFrame {
 	 * Create the frame.
 	 */
 	public GuestRegister(Reserve reserve) {
+		this.guestController = new GuestController();
+
 		setIconImage(Toolkit.getDefaultToolkit().getImage(GuestRegister.class.getResource("../img/lOGO-50PX.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 634);
@@ -260,7 +265,6 @@ public class GuestRegister extends JFrame {
 		btnguardar.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				// TODO Implement button save guest.
 				String name = txtName.getText();
 				String lastName = txtLastName.getText();
 				Date dBirthDate = txtFechaN.getDate();
@@ -271,16 +275,17 @@ public class GuestRegister extends JFrame {
 				if (name != null && lastName != null && dBirthDate != null && 
 						nationality != null && phoneNumber != null && 
 						sReservationNumber != null) {
-					
+
 						LocalDate birthDate = LocalDate.ofInstant(
 								dBirthDate.toInstant(), ZoneId.systemDefault());
-						Integer reservationNumber = Integer.valueOf(sReservationNumber);
-						
-						Guest guest = new Guest(name, lastName, birthDate, nationality, phoneNumber, reserve);
+
+						Guest guest = new Guest(name, lastName, birthDate, 
+								nationality, phoneNumber, reserve);
+						guest = guestController.save(guest);
+						System.out.println(guest);
 				} else {
 					showMsgFieldsUncompleted();
 				}
-
 			}
 		});
 		btnguardar.setLayout(null);
