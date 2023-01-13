@@ -375,7 +375,7 @@ public class ReservasView extends JFrame {
 					Reserve reserve = new Reserve(checkinDate, checkoutDate, reserveValue, paymentMethod);
 					System.out.println(reserve);
 
-					RegistroHuesped registro = new RegistroHuesped();
+					GuestRegister registro = new GuestRegister(reserve);
 					registro.setVisible(true);
 				} else {
 					JOptionPane.showMessageDialog(null, "Debes completar todos los campos.");
