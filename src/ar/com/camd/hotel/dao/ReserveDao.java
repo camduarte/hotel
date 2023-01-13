@@ -6,6 +6,7 @@
 package ar.com.camd.hotel.dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -22,12 +23,12 @@ import ar.com.camd.hotel.model.Reserve;
  * @version 1.0.0-SNAPSHOT
  */
 public class ReserveDao implements Dao<Reserve> {
-	private Connection con;
+	final private Connection con;
 
 	private final String QRY_FIND_ALL = "SELECT id, checkin_date, checkout_date, value, payment_method FROM hotel.reserve";
-
 	private final String QRY_REMOVE = "DELETE FROM hotel.reserve WHERE id = ?";
-	
+	private final String QRY_INSERT = "INSERT INTO hotel.reserve (checkin_date, checkout_date, value, payment_method) VALUES (?, ?, ?, ?)";
+
 	/**
 	 * @param con The data base connection.
 	 */
@@ -36,31 +37,54 @@ public class ReserveDao implements Dao<Reserve> {
 	}
 
 	@Override
-	public Reserve save(Reserve t) {
-		// TODO Auto-generated method stub
+	public Reserve save(Reserve reserve) {
+		try(con) {
+			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
+			try(preparedStatement) {
+				preparedStatement.setDate(1, Date.valueOf(reserve.getCheckinDate()));
+				preparedStatement.setDate(2, Date.valueOf(reserve.getCheckoutDate()));
+				preparedStatement.setBigDecimal(3, reserve.getValue());
+				preparedStatement.setString(4, reserve.getPaymentMethod().name());
+				preparedStatement.executeUpdate();
+
+				final ResultSet resultSet = preparedStatement.getGeneratedKeys();
+				try(resultSet) {
+					if (resultSet.next()) {
+						reserve.setId(resultSet.getInt(1));
+						return reserve;
+					}	
+				}
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
 		return null;
 	}
 
 	@Override
 	public List<Reserve> findAll() {
 		List<Reserve> reservations = new ArrayList<>();
-		try {
-			PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_ALL);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				Reserve reserve = new Reserve(
-						resultSet.getInt("id"), 
-						resultSet.getDate("checkin_date").toLocalDate(),
-						resultSet.getDate("checkout_date").toLocalDate(),
-						resultSet.getBigDecimal("value"),
-						PaymentMethod.valueOf(resultSet.getString("payment_method")));
-				System.out.println(reserve);
-				reservations.add(reserve);
+		try(con) {
+			final PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_ALL);
+			try(preparedStatement){
+				final ResultSet resultSet = preparedStatement.executeQuery();
+				try(resultSet) {
+					while (resultSet.next()) {
+						Reserve reserve = new Reserve(
+							resultSet.getInt("id"), 
+							resultSet.getDate("checkin_date").toLocalDate(),
+							resultSet.getDate("checkout_date").toLocalDate(),
+							resultSet.getBigDecimal("value"),
+							PaymentMethod.valueOf(resultSet.getString("payment_method")));
+						System.out.println(reserve);
+						reservations.add(reserve);
+					}
+					return reservations;
+				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return reservations;
 	}
 
 	@Override
@@ -81,7 +105,7 @@ public class ReserveDao implements Dao<Reserve> {
 	 * @return The reservations amount removed.
 	 */
 	public Integer remove(Integer id) {
-		try {
+		try(con) {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_REMOVE);
 			try (preparedStatement) {
 				preparedStatement.setInt(1, id);
@@ -95,5 +119,4 @@ public class ReserveDao implements Dao<Reserve> {
 			throw new RuntimeException(e);
 		}
 	}
-
 }

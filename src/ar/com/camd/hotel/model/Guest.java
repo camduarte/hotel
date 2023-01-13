@@ -14,7 +14,7 @@ import java.time.LocalDate;
  * @author   Christian Ariel Modesto Duarte <duarte.camd@gmail.com>
  * @version  1.0.0-SNAPSHOT
  */
-public class Guest {
+public final class Guest {
 	private Integer id;
 	private String name;
 	private String lastname;
@@ -59,6 +59,24 @@ public class Guest {
 		this.birthdate = birthDate;
 		this.nationality = nationality;
 		this.phoneNumber = phoneNumber;
+	}
+
+	/**
+	 * @param name The guest name
+	 * @param lastname The guest last name.
+	 * @param birthdate The guest birth date.
+	 * @param nationality The guest nationality.
+	 * @param phoneNumber The guest phone number.
+	 * @param reserve The reserve.
+	 */
+	public Guest(String name, String lastname, LocalDate birthdate, Nationality nationality, String phoneNumber,
+			Reserve reserve) {
+		this.name = name;
+		this.lastname = lastname;
+		this.birthdate = birthdate;
+		this.nationality = nationality;
+		this.phoneNumber = phoneNumber;
+		this.reserve = reserve;
 	}
 
 	/**
