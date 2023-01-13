@@ -15,7 +15,7 @@ import java.time.temporal.ChronoUnit;
  * @author Christian Ariel Modesto Duarte <duarte.camd@gmail.com>
  * @version 1.0.0-SNAPSHOT
  */
-public abstract class Reserve {
+public final class Reserve {
 	private Integer id;
 	private LocalDate checkinDate;
 	private LocalDate checkoutDate;

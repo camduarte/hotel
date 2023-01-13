@@ -5,6 +5,8 @@
  */
 package ar.com.camd.hotel.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import ar.com.camd.hotel.model.Reserve;
@@ -30,4 +32,10 @@ public interface ReserveService {
 	 * @return The reservations amount removed.
 	 */
 	public Integer remove(Integer id);
+	
+	/**
+	 * Calculates the reservation value.
+	 * @return The reservation value.
+	 */
+	public BigDecimal calculateValue(LocalDate checkin, LocalDate checkout);
 }

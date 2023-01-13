@@ -104,7 +104,7 @@ public class GuestDao implements Dao<Guest> {
 			PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_ALL);
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
-				Reserve reserve = new Reserve(
+				Reserve reserve = new Reserve (
 						resultSet.getInt("id"), 
 						resultSet.getDate("checkin_date").toLocalDate(),
 						resultSet.getDate("checkout_date").toLocalDate(),

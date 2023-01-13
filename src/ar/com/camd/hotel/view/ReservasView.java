@@ -10,7 +10,11 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.math.BigDecimal;
 import java.text.Format;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.ImageIcon;
@@ -27,10 +31,15 @@ import javax.swing.border.LineBorder;
 
 import com.toedter.calendar.JDateChooser;
 
+import ar.com.camd.hotel.service.ReserveService;
+import ar.com.camd.hotel.service.ReserveServiceImpl;
+
 
 @SuppressWarnings("serial")
 public class ReservasView extends JFrame {
 
+	private ReserveService reserveService;
+	
 	private JPanel contentPane;
 	public static JTextField txtValor;
 	public static JDateChooser txtFechaE;
@@ -62,6 +71,9 @@ public class ReservasView extends JFrame {
 	 */
 	public ReservasView() {
 		super("Reserva");
+		
+		this.reserveService = new ReserveServiceImpl();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(ReservasView.class.getResource("../img/aH-40px.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 560);
@@ -114,9 +126,22 @@ public class ReservasView extends JFrame {
 		txtFechaE.setFont(new Font("Roboto", Font.PLAIN, 18));
 		panel.add(txtFechaE);
 		
+		// Gets the check-in date.
+		txtFechaE.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if ("date".equals(evt.getPropertyName())) {
+					JDateChooser aDateChooser = (JDateChooser) evt.getSource();
+					Date date = aDateChooser.getDate();
+					LocalDate checkinDate = LocalDate.ofInstant(date.toInstant(), ZoneId.systemDefault());
+					System.out.println(checkinDate);
+				}
+			}
+		});
+		
 		lblValorSimbolo = new JLabel("$");
 		lblValorSimbolo.setVisible(false);
-		lblValorSimbolo.setBounds(121, 332, 17, 25);
+		lblValorSimbolo.setBounds(68, 332, 17, 25);
 		lblValorSimbolo.setForeground(SystemColor.textHighlight);
 		lblValorSimbolo.setFont(new Font("Roboto", Font.BOLD, 17));
 		
@@ -133,7 +158,7 @@ public class ReservasView extends JFrame {
 		lblCheckOut.setBounds(68, 221, 187, 14);
 		lblCheckOut.setFont(new Font("Roboto Black", Font.PLAIN, 18));
 		panel.add(lblCheckOut);
-		
+
 		txtFechaS = new JDateChooser();
 		txtFechaS.getCalendarButton().setIcon(new ImageIcon(ReservasView.class.getResource("../img/icon-reservas.png")));
 		txtFechaS.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 11));
@@ -141,28 +166,47 @@ public class ReservasView extends JFrame {
 		txtFechaS.getCalendarButton().setBounds(267, 1, 21, 31);
 		txtFechaS.setBackground(Color.WHITE);
 		txtFechaS.setFont(new Font("Roboto", Font.PLAIN, 18));
-		txtFechaS.addPropertyChangeListener(new PropertyChangeListener() {
-			public void propertyChange(PropertyChangeEvent evt) {
-//Activa el evento, después del usuario seleccionar las fechas se debe calcular el valor de la reserva
-			}
-		});
 		txtFechaS.setDateFormatString("yyyy-MM-dd");
 		txtFechaS.getCalendarButton().setBackground(SystemColor.textHighlight);
 		txtFechaS.setBorder(new LineBorder(new Color(255, 255, 255), 0));
 		panel.add(txtFechaS);
-		
-	
-		
+
+		// Gets the check-out date.
+		txtFechaS.addPropertyChangeListener(new PropertyChangeListener() {
+			@Override
+			public void propertyChange(PropertyChangeEvent evt) {
+				if ("date".equals(evt.getPropertyName())) {
+					Date dateIn = txtFechaE.getDate();
+					if (dateIn != null) {
+						LocalDate checkinDate = LocalDate.ofInstant(dateIn.toInstant(), ZoneId.systemDefault());
+
+						JDateChooser aDateChooser = (JDateChooser) evt.getSource();
+						Date dateOut = aDateChooser.getDate();
+						LocalDate checkoutDate = LocalDate.ofInstant(dateOut.toInstant(), ZoneId.systemDefault());
+						System.out.printf("checkinDate<%s>, checkoutDate<%s>%n", checkinDate, checkoutDate);
+
+						BigDecimal  reserveValue = reserveService.calculateValue(checkinDate, checkoutDate);
+						System.out.printf("reserveValue<%s>%n" , reserveValue.toString());
+						lblValorSimbolo.setVisible(true);
+						txtValor.setText(reserveValue.toString());
+					} else {
+						System.out.println("Check-in date is null.");
+					}
+				}
+			}
+		});
+
 		txtValor = new JTextField();
 		txtValor.setBackground(SystemColor.text);
-		txtValor.setHorizontalAlignment(SwingConstants.CENTER);
+		txtValor.setHorizontalAlignment(SwingConstants.LEFT);
 		txtValor.setForeground(Color.BLACK);
-		txtValor.setBounds(78, 328, 43, 33);
+		txtValor.setBounds(82, 328, 275, 33);
+//		txtValor.setBounds(68, 328, 289, 33);
 		txtValor.setEditable(false);
 		txtValor.setFont(new Font("Roboto Black", Font.BOLD, 17));
 		txtValor.setBorder(javax.swing.BorderFactory.createEmptyBorder());
-		panel.add(txtValor);
 		txtValor.setColumns(10);
+		panel.add(txtValor);
 		
 		JLabel lblValor = new JLabel("VALOR DE LA RESERVA");
 		lblValor.setForeground(SystemColor.textInactiveText);

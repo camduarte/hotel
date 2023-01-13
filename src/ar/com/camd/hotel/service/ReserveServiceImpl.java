@@ -5,6 +5,8 @@
  */
 package ar.com.camd.hotel.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 import ar.com.camd.hotel.dao.ReserveDao;
@@ -37,6 +39,11 @@ public class ReserveServiceImpl implements ReserveService {
 	@Override
 	public Integer remove(Integer id) {
 		return this.reserveDao.remove(id);
+	}
+
+	@Override
+	public BigDecimal calculateValue(LocalDate checkin, LocalDate checkout) {
+		return Reserve.calculateValue(checkin, checkout);
 	}
 
 }
