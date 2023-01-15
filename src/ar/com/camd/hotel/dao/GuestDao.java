@@ -36,14 +36,14 @@ public class GuestDao implements Dao<Guest> {
 			+ "g.birthdate, "
 			+ "g.nationality, "
 			+ "g.phone_number, "
-			+ "r.id, "
+			+ "r.id AS reserve_id, "
 			+ "r.checkin_date, "
 			+ "r.checkout_date, "
 			+ "r.value, "
 			+ "r.payment_method "
 			+ "FROM guest AS g "
 			+ "INNER JOIN reserve AS r "
-			+ "ON g.id = r.id";
+			+ "ON g.id_reserve = r.id";
 	
 	private final String QRY_FIND_BY_LAST_NAME = "SELECT "
 			+ "g.id, "
@@ -52,14 +52,14 @@ public class GuestDao implements Dao<Guest> {
 			+ "g.birthdate, "
 			+ "g.nationality, "
 			+ "g.phone_number, "
-			+ "r.id, "
+			+ "r.id AS reserve_id, "
 			+ "r.checkin_date, "
 			+ "r.checkout_date, "
 			+ "r.value, "
 			+ "r.payment_method "
 			+ "FROM guest AS g "
 			+ "INNER JOIN reserve AS r "
-			+ "ON g.id = r.id "
+			+ "ON g.id_reserve = r.id "
 			+ "AND g.lastname = ?";
 
 	private final String QRY_FIND_BY_RESERVE_ID = "SELECT "
@@ -69,14 +69,14 @@ public class GuestDao implements Dao<Guest> {
 			+ "g.birthdate, "
 			+ "g.nationality, "
 			+ "g.phone_number, "
-			+ "r.id, "
+			+ "r.id AS reserve_id, "
 			+ "r.checkin_date, "
 			+ "r.checkout_date, "
 			+ "r.value, "
 			+ "r.payment_method "
 			+ "FROM guest AS g "
 			+ "INNER JOIN reserve AS r "
-			+ "ON g.id = r.id "
+			+ "ON g.id_reserve = r.id "
 			+ "AND g.id_reserve = ?";
 	
 	private final String QRY_REMOVE = "DELETE FROM hotel.guest WHERE id = ?";
@@ -134,7 +134,7 @@ public class GuestDao implements Dao<Guest> {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Reserve reserve = new Reserve (
-						resultSet.getInt("id"), 
+						resultSet.getInt("reserve_id"), 
 						resultSet.getDate("checkin_date").toLocalDate(),
 						resultSet.getDate("checkout_date").toLocalDate(),
 						resultSet.getBigDecimal("value"),
@@ -196,14 +196,14 @@ public class GuestDao implements Dao<Guest> {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			while (resultSet.next()) {
 				Reserve reserve = new Reserve(
-						resultSet.getInt("id"), 
+						resultSet.getInt("reserve_id"),
 						resultSet.getDate("checkin_date").toLocalDate(),
 						resultSet.getDate("checkout_date").toLocalDate(),
 						resultSet.getBigDecimal("value"),
 						PaymentMethod.valueOf(resultSet.getString("payment_method")));
 
 				Guest guest = new Guest(
-						resultSet.getInt("id"), 
+						resultSet.getInt("id"),
 						resultSet.getString("name"),
 						resultSet.getString("lastname"),
 						resultSet.getDate("birthdate").toLocalDate(),
@@ -233,7 +233,7 @@ public class GuestDao implements Dao<Guest> {
 			ResultSet resultSet = preparedStatement.executeQuery();
 			if (resultSet.next()) {
 				Reserve reserve = new Reserve(
-						resultSet.getInt("id"), 
+						resultSet.getInt("reserve_id"), 
 						resultSet.getDate("checkin_date").toLocalDate(),
 						resultSet.getDate("checkout_date").toLocalDate(),
 						resultSet.getBigDecimal("value"),
