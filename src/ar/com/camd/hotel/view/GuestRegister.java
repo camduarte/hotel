@@ -272,9 +272,9 @@ public class GuestRegister extends JFrame {
 				String phoneNumber = txtPhoneNumber.getText();
 				String sReservationNumber = txtReservationNumber.getText();
 
-				if (name != "" && lastName != "" && dBirthDate != null && 
-						nationality != null && phoneNumber != "" && 
-						sReservationNumber != "") {
+				if (!name.isBlank() && !lastName.isBlank() && dBirthDate != null && 
+						nationality != null && !phoneNumber.isBlank() && 
+						!sReservationNumber.isBlank()) {
 
 						LocalDate birthDate = LocalDate.ofInstant(
 								dBirthDate.toInstant(), ZoneId.systemDefault());
