@@ -213,7 +213,7 @@ public class ReserveRegister extends JFrame {
 		txtFormaPago.setBackground(SystemColor.text);
 		txtFormaPago.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
 		txtFormaPago.setFont(new Font("Roboto", Font.PLAIN, 16));
-		
+
 		String[] options = new String[] {
 				PaymentMethod.CASH.getDescription(), 
 				PaymentMethod.DEBIT.getDescription(), 
@@ -225,7 +225,7 @@ public class ReserveRegister extends JFrame {
 		panel.add(txtFormaPago);
 
 		txtFormaPago.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent event) {
 				JComboBox<String> cb = (JComboBox<String>)event.getSource();
@@ -409,7 +409,7 @@ public class ReserveRegister extends JFrame {
 		int y = evt.getYOnScreen();
 		this.setLocation(x - xMouse, y - yMouse);
 	}
-	
+
 	/**
 	 * Show message wrong dates.
 	 */
@@ -417,7 +417,7 @@ public class ReserveRegister extends JFrame {
 		JOptionPane.showMessageDialog(this, MSG_WRONG_DATES, "Fecha incorrecta",
 				JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 	/**
 	 * Calculates the reservation value.
 	 * @param dateIn The check in date.

@@ -42,7 +42,7 @@ public class GuestRegister extends JFrame {
 	private JTextField txtPhoneNumber;
 	private JTextField txtReservationNumber;
 	private JDateChooser txtFechaN;
-	private JComboBox<Nationality> txtNationality;
+	private JComboBox<Object> txtNationality;
 	private JLabel labelExit;
 	private JLabel labelBack;
 	int xMouse, yMouse;
@@ -162,7 +162,11 @@ public class GuestRegister extends JFrame {
 		txtNationality.setBounds(560, 350, 289, 36);
 		txtNationality.setBackground(SystemColor.text);
 		txtNationality.setFont(new Font("Roboto", Font.PLAIN, 16));
-		txtNationality.setModel(new DefaultComboBoxModel<Nationality>(Nationality.values()));
+
+		txtNationality.setModel(new DefaultComboBoxModel<Object>(
+				Nationality.getDescriptions().toArray()
+				));
+
 		contentPane.add(txtNationality);
 
 		JLabel lblNombre = new JLabel("NOMBRE");
@@ -216,6 +220,7 @@ public class GuestRegister extends JFrame {
 		contentPane.add(lblNumeroReserva);
 
 		txtReservationNumber = new JTextField();
+		txtReservationNumber.setEditable(false);
 		txtReservationNumber.setFont(new Font("Roboto", Font.PLAIN, 16));
 		txtReservationNumber.setBounds(560, 495, 285, 33);
 		txtReservationNumber.setColumns(10);
@@ -268,7 +273,10 @@ public class GuestRegister extends JFrame {
 				String name = txtName.getText();
 				String lastName = txtLastName.getText();
 				Date dBirthDate = txtFechaN.getDate();
-				Nationality nationality = (Nationality) txtNationality.getSelectedItem();
+
+				Nationality nationality = Nationality.findByDescription(
+						(String)txtNationality.getSelectedItem());
+
 				String phoneNumber = txtPhoneNumber.getText();
 				String sReservationNumber = txtReservationNumber.getText();
 

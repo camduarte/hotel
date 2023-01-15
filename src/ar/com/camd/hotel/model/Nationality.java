@@ -5,7 +5,9 @@
  */
 package ar.com.camd.hotel.model;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * <code>Nationality</code>
@@ -66,5 +68,18 @@ public enum Nationality {
 		return Arrays.stream(values()).filter(
 				value -> value.getDescription().equals(description)
 				).findFirst().orElse(null);
+	}
+
+	/**
+	 * Gets all nationalities descriptions. 
+	 * @return The descriptions.
+	 */
+	public static List<String> getDescriptions() {
+		List<String> descriptions = new ArrayList<>();
+		Nationality[] nationalities = Nationality.values();
+		for(Nationality nationality : nationalities) {
+			descriptions.add(nationality.getDescription());
+		}
+		return descriptions;
 	}
 }
