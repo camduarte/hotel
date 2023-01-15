@@ -353,7 +353,7 @@ public class GuestRegister extends JFrame {
 	}
 
 	// Código que permite mover la ventana por la pantalla según la posición de "x"
-	// y "y"
+	// e "y"
 	private void headerMousePressed(java.awt.event.MouseEvent evt) {
 		xMouse = evt.getX();
 		yMouse = evt.getY();

@@ -33,7 +33,7 @@ import ar.com.camd.hotel.model.Guest;
 import ar.com.camd.hotel.model.Nationality;
 
 @SuppressWarnings("serial")
-public class Busqueda extends JFrame {
+public class FindGuestReservation extends JFrame {
 
 	private FindController findController;
 
@@ -54,7 +54,7 @@ public class Busqueda extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Busqueda frame = new Busqueda();
+					FindGuestReservation frame = new FindGuestReservation();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -66,10 +66,10 @@ public class Busqueda extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Busqueda() {
+	public FindGuestReservation() {
 		this.findController = new FindController();
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(Busqueda.class.getResource("../img/lupa2.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FindGuestReservation.class.getResource("../img/lupa2.png")));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
 		contentPane = new JPanel();
@@ -101,7 +101,7 @@ public class Busqueda extends JFrame {
 		tbReservas = new JTable();
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
-		panel.addTab("Reservas", new ImageIcon(Busqueda.class.getResource("../img/reservado.png")), tbReservas, null);
+		panel.addTab("Reservas", new ImageIcon(FindGuestReservation.class.getResource("../img/reservado.png")), tbReservas, null);
 		modelo = (DefaultTableModel) tbReservas.getModel();
 		modelo.addColumn("Numero de Reserva");
 		modelo.addColumn("Fecha Check In");
@@ -112,7 +112,7 @@ public class Busqueda extends JFrame {
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
-		panel.addTab("Huéspedes", new ImageIcon(Busqueda.class.getResource("../img/pessoas.png")), tbHuespedes, null);
+		panel.addTab("Huéspedes", new ImageIcon(FindGuestReservation.class.getResource("../img/pessoas.png")), tbHuespedes, null);
 		modeloH = (DefaultTableModel) tbHuespedes.getModel();
 		modeloH.addColumn("Numero de Huesped");
 		modeloH.addColumn("Nombre");
@@ -123,7 +123,7 @@ public class Busqueda extends JFrame {
 		modeloH.addColumn("Numero de Reserva");
 
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(Busqueda.class.getResource("../img/Ha-100px.png")));
+		lblNewLabel_2.setIcon(new ImageIcon(FindGuestReservation.class.getResource("../img/Ha-100px.png")));
 		lblNewLabel_2.setBounds(56, 51, 104, 107);
 		contentPane.add(lblNewLabel_2);
 
@@ -227,28 +227,13 @@ public class Busqueda extends JFrame {
 				modeloH.getDataVector().clear();
 
 				String searchTerm = txtBuscar.getText();
-				System.out.println(searchTerm);
+				System.out.printf("searchTerm<%s>", searchTerm);
 				if (isDigit(searchTerm)) {
 					Guest guest = findController.getByReserveId(Integer.valueOf(searchTerm));
-					modeloH.addRow(
-							new Object[] { guest.getId(), guest.getName(), guest.getLastname(), guest.getBirthdate(),
-									guest.getNationality(), guest.getPhoneNumber(), guest.getReserve().getId() });
-
-					modelo.addRow(new Object[] { guest.getReserve().getId(), guest.getReserve().getCheckinDate(),
-							guest.getReserve().getCheckoutDate(), guest.getReserve().getValue(),
-							guest.getReserve().getPaymentMethod() });
+					fillTable(guest);
 				} else {
 					List<Guest> guests = findController.getByLastName(searchTerm);
-					guests.forEach(guest -> {
-
-						modeloH.addRow(new Object[] { guest.getId(), guest.getName(), guest.getLastname(),
-								guest.getBirthdate(), guest.getNationality(), guest.getPhoneNumber(),
-								guest.getReserve().getId() });
-
-						modelo.addRow(new Object[] { guest.getReserve().getId(), guest.getReserve().getCheckinDate(),
-								guest.getReserve().getCheckoutDate(), guest.getReserve().getValue(),
-								guest.getReserve().getPaymentMethod() });
-					});
+					guests.forEach(guest -> fillTable(guest));
 				}
 			}
 		});
@@ -467,5 +452,19 @@ public class Busqueda extends JFrame {
 
 			JOptionPane.showMessageDialog(this, guestUpdated + " item actualizado con éxito!");
 		}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+	}
+	
+	/**
+	 * Fills the table with guest and reserve information.
+	 * @param guest The guest.
+	 */
+	private void fillTable(Guest guest) {
+		modeloH.addRow(new Object[] { guest.getId(), guest.getName(), guest.getLastname(),
+				guest.getBirthdate(), guest.getNationality(), guest.getPhoneNumber(),
+				guest.getReserve().getId()});
+
+		modelo.addRow(new Object[] { guest.getReserve().getId(), guest.getReserve().getCheckinDate(),
+				guest.getReserve().getCheckoutDate(), guest.getReserve().getValue(),
+				guest.getReserve().getPaymentMethod().getDescription()});
 	}
 }
