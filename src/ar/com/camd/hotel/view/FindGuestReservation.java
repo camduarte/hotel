@@ -460,7 +460,7 @@ public class FindGuestReservation extends JFrame {
 	 */
 	private void fillTable(Guest guest) {
 		modeloH.addRow(new Object[] { guest.getId(), guest.getName(), guest.getLastname(),
-				guest.getBirthdate(), guest.getNationality(), guest.getPhoneNumber(),
+				guest.getBirthdate(), guest.getNationality().getDescription(), guest.getPhoneNumber(),
 				guest.getReserve().getId()});
 
 		modelo.addRow(new Object[] { guest.getReserve().getId(), guest.getReserve().getCheckinDate(),
