@@ -5,6 +5,8 @@
  */
 package ar.com.camd.hotel.model;
 
+import java.util.Arrays;
+
 /**
  * <code>Nationality</code>
  * Represents the nationality of the guest.
@@ -13,15 +15,56 @@ package ar.com.camd.hotel.model;
  * @version  1.0.0-SNAPSHOT
  */
 public enum Nationality {
-	AMERICAN,
-	ARGENTINIAN,
-	BRITISH,
-	CANADIAN,
-	DUTCH,
-	FRENCH,
-	GERMAN,
-	ITALIAN,
-	MEXICAN,
-	RUSSIAN,
-	SPANISH
+	AMERICAN("Estadounidense"),
+	ARGENTINIAN("Argentino/a"),
+	BOLIVIAN("Boliviano/a"),
+	BRAZILEAN("Brazileño/a"),
+	BRITISH("Británico/a"),
+	CANADIAN("Canadiense"),
+	CHILEAN("Chileno/a"),
+	CHINESE("Chino/a"),
+	COLOMBIAN("Colombiano/a"),
+	CUBAN("Cubano/a"),
+	DANISH("Danés"),
+	DOMINICAN("Dominicano/a"),
+	DUTCH("Holandesa"),
+	FRENCH("Francés"),
+	GERMAN("Alemán"),
+	GUATEMALAN("Guatemalteco/a"),
+	HONDURAN("Hondureño/a"),
+	ITALIAN("Italiano/a"),
+	JAPANESE("Japonés"),
+	MEXICAN("Mexicano/a"),
+	NICARAGUAN("Nicaragüense"),
+	PANAMANIAN("Panameño/a"),
+	PARAGUAYAN("Paraguayo/a"),
+	PERUVIAN("Peruano/a"),
+	RUSSIAN("Ruso/a"),
+	SPANISH("Español/a"),
+	URUGUAYAN("Uruguayo/a"),
+	VENEZUELAN("Venezolano/a");
+
+	private String description;
+
+	private Nationality(String description) {
+		this.description = description;
+	}
+
+	/**
+	 * @return The nationality description.
+	 */
+	public String getDescription() {
+		return description;
+	}
+
+	/**
+	 * Finds the nationality by its description.
+	 * @param description The nationality description.
+	 * @return The nationality.	
+	 */
+	public static Nationality findByDescription(String description) {
+		return Arrays.stream(values()).filter(
+				value -> value.getDescription().equals(description)
+				).findFirst().orElse(null);
+	}
 }
