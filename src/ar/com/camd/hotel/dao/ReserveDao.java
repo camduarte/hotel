@@ -39,7 +39,7 @@ public class ReserveDao implements Dao<Reserve> {
 
 	@Override
 	public Reserve save(Reserve reserve) {
-		try(this.con) {
+		try {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_INSERT, PreparedStatement.RETURN_GENERATED_KEYS);
 			try(preparedStatement) {
 				preparedStatement.setDate(1, Date.valueOf(reserve.getCheckinDate()));
@@ -67,7 +67,7 @@ public class ReserveDao implements Dao<Reserve> {
 	@Override
 	public List<Reserve> findAll() {
 		List<Reserve> reservations = new ArrayList<>();
-		try(this.con) {
+		try {
 			final PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_ALL);
 			try(preparedStatement){
 				final ResultSet resultSet = preparedStatement.executeQuery();
@@ -108,7 +108,7 @@ public class ReserveDao implements Dao<Reserve> {
 	 * @return The reservations amount removed.
 	 */
 	public Integer remove(Integer id) {
-		try(this.con) {
+		try {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_REMOVE);
 			try (preparedStatement) {
 				preparedStatement.setInt(1, id);
@@ -129,7 +129,7 @@ public class ReserveDao implements Dao<Reserve> {
 	 * @return The reserve amount updated.
 	 */
 	public Integer update(Reserve reserve) {
-		try(this.con) {
+		try {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_UPDATE);
 			try(preparedStatement) {
 				preparedStatement.setDate(1, Date.valueOf(reserve.getCheckinDate()));

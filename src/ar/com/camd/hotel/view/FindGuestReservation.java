@@ -38,7 +38,17 @@ import ar.com.camd.hotel.model.Reserve;
 @SuppressWarnings("serial")
 public class FindGuestReservation extends JFrame {
 
-	private final String MSG_SELECCIONE_UN_ITEM = "Por favor, seleccione un item";
+	private final String TITLE_INVALID_PAYMENT_METHOD = 
+			"Método de pago no válido";
+
+	private final String MSG_INVALID_PAYMENT_METHOD = 
+			String.format("Los valores posibles para le método de pago son: %s, %s o %s.",
+					PaymentMethod.CASH.getDescription(), 
+					PaymentMethod.DEBIT.getDescription(), 
+					PaymentMethod.CREDIT.getDescription());
+
+	private final String MSG_SELECCIONE_UN_ITEM = 
+			"Por favor, seleccione un item";
 
 	private FindController findController;
 
@@ -472,7 +482,13 @@ public class FindGuestReservation extends JFrame {
 			LocalDate checkinDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 1).toString());
 			LocalDate checkoutDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 2).toString());
 			BigDecimal value = new BigDecimal(modelo.getValueAt(tbReservas.getSelectedRow(),3).toString()); 
+			
 			PaymentMethod paymentMethod = PaymentMethod.findByDescription((String)modelo.getValueAt(tbReservas.getSelectedRow(),4));
+			if (paymentMethod == null) {
+				JOptionPane.showMessageDialog(this, MSG_INVALID_PAYMENT_METHOD, 
+						TITLE_INVALID_PAYMENT_METHOD, JOptionPane.INFORMATION_MESSAGE);
+				return;
+			}
 
 			Reserve reserve = new Reserve(id, checkinDate, checkoutDate, value, paymentMethod);
 			Integer guestUpdated = this.findController.update(reserve);
