@@ -165,7 +165,7 @@ public class FindGuestReservation extends JFrame {
 		btnAtras.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
+				UserMenu usuario = new UserMenu();
 				usuario.setVisible(true);
 				dispose();
 			}
@@ -197,7 +197,7 @@ public class FindGuestReservation extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuUsuario usuario = new MenuUsuario();
+				UserMenu usuario = new UserMenu();
 				usuario.setVisible(true);
 				dispose();
 			}
