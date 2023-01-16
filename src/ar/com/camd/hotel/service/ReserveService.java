@@ -45,4 +45,11 @@ public interface ReserveService {
 	 * @return The reservation value.
 	 */
 	public BigDecimal calculateValue(LocalDate checkin, LocalDate checkout);
+	
+	/**
+	 * Updates the reserve.
+	 * @param reserve The reserve.
+	 * @return The reserve amount updated.
+	 */
+	public Integer update(Reserve reserve);
 }

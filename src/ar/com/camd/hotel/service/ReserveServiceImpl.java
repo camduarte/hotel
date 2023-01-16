@@ -51,4 +51,9 @@ public class ReserveServiceImpl implements ReserveService {
 		return this.reserveDao.save(reserve);
 	}
 
+	@Override
+	public Integer update(Reserve reserve) {
+		return this.reserveDao.update(reserve);
+	}
+
 }
