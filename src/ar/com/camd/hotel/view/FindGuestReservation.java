@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -31,9 +32,13 @@ import javax.swing.table.DefaultTableModel;
 import ar.com.camd.hotel.controller.FindController;
 import ar.com.camd.hotel.model.Guest;
 import ar.com.camd.hotel.model.Nationality;
+import ar.com.camd.hotel.model.PaymentMethod;
+import ar.com.camd.hotel.model.Reserve;
 
 @SuppressWarnings("serial")
 public class FindGuestReservation extends JFrame {
+
+	private final String MSG_SELECCIONE_UN_ITEM = "Por favor, seleccione un item";
 
 	private FindController findController;
 
@@ -295,7 +300,7 @@ public class FindGuestReservation extends JFrame {
 				if (tbHuespedes.getSelectedRow() != -1) {
 					updateGuest();
 				} else if (tbReservas.getSelectedRow() != -1) {
-//					removeReserve();	
+					updateReserve();
 				} else {
 					showMsgSelectItem();
 				}
@@ -388,7 +393,7 @@ public class FindGuestReservation extends JFrame {
 					modeloH.removeRow(tbHuespedes.getSelectedRow());
 
 					JOptionPane.showMessageDialog(this, guestRemoved + " item eliminado con éxito!");
-				}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+				}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
 	}
 
 	/**
@@ -405,7 +410,7 @@ public class FindGuestReservation extends JFrame {
 					modeloH.removeRow(indexRow);
 
 					JOptionPane.showMessageDialog(this, reservationsRemoved + " item eliminado con éxito!");
-				}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+				}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
 	}
 	
 	/**
@@ -423,14 +428,14 @@ public class FindGuestReservation extends JFrame {
 					modeloH.removeRow(indexRow);
 
 					JOptionPane.showMessageDialog(this, reservationsRemoved + " item eliminado con éxito!");
-				}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+				}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
 	}
 	
 	/**
 	 * Shows message Select an item, please.
 	 */
 	private void showMsgSelectItem() {
-		JOptionPane.showMessageDialog(this, "Por favor, elije un item");
+		JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM);
 	}
 
 	/**
@@ -450,8 +455,32 @@ public class FindGuestReservation extends JFrame {
 			Guest guest = new Guest(id, name, lastName, birthDate, nationality, phoneNumber);
 			Integer guestUpdated = this.findController.update(guest);
 
-			JOptionPane.showMessageDialog(this, guestUpdated + " item actualizado con éxito!");
-		}, () -> JOptionPane.showMessageDialog(this, "Por favor, elije un item"));
+			String msg = String.format("¡%d item actualizado con éxito!", guestUpdated);
+			JOptionPane.showMessageDialog(this, msg);
+
+		}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
+	}
+	
+	/**
+	 * Updates the reserve.
+	 */
+	protected void updateReserve() {
+		Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
+		.ifPresentOrElse(fila -> {
+
+			Integer id = (Integer) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
+			LocalDate checkinDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 1).toString());
+			LocalDate checkoutDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 2).toString());
+			BigDecimal value = new BigDecimal(modelo.getValueAt(tbReservas.getSelectedRow(),3).toString()); 
+			PaymentMethod paymentMethod = PaymentMethod.findByDescription((String)modelo.getValueAt(tbReservas.getSelectedRow(),4));
+
+			Reserve reserve = new Reserve(id, checkinDate, checkoutDate, value, paymentMethod);
+			Integer guestUpdated = this.findController.update(reserve);
+
+			String msg = String.format("¡%d item actualizado con éxito!", guestUpdated);
+			JOptionPane.showMessageDialog(this, msg);
+
+		}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
 	}
 
 	/**

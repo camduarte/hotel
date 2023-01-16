@@ -93,4 +93,13 @@ public class FindController {
 	public Integer update(Guest guest) {
 		return this.guestService.update(guest);
 	}
+
+	/**
+	 * Updates the reserve.
+	 * @param reserve The reserve.
+	 * @return The reserve amount updated.
+	 */
+	public Integer update(Reserve reserve) {
+		return this.reserveService.update(reserve);
+	}
 }

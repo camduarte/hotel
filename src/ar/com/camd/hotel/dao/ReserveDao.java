@@ -136,6 +136,7 @@ public class ReserveDao implements Dao<Reserve> {
 				preparedStatement.setDate(2, Date.valueOf(reserve.getCheckoutDate()));
 				preparedStatement.setBigDecimal(3, reserve.getValue());
 				preparedStatement.setString(4, reserve.getPaymentMethod().name());
+				preparedStatement.setInt(5, reserve.getId());
 				preparedStatement.executeUpdate();
 				return preparedStatement.getUpdateCount();
 			}
