@@ -28,6 +28,7 @@ public class ReserveDao implements Dao<Reserve> {
 	private final String QRY_FIND_ALL = "SELECT id, checkin_date, checkout_date, value, payment_method FROM hotel.reserve";
 	private final String QRY_REMOVE = "DELETE FROM hotel.reserve WHERE id = ?";
 	private final String QRY_INSERT = "INSERT INTO hotel.reserve (checkin_date, checkout_date, value, payment_method) VALUES (?, ?, ?, ?)";
+	private final String QRY_UPDATE = "UPDATE hotel.reserve SET checkin_date = ?, checkout_date = ?, value = ?, payment_method = ? WHERE id = ?";
 
 	/**
 	 * @param con The data base connection.
@@ -100,7 +101,7 @@ public class ReserveDao implements Dao<Reserve> {
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	/**
 	 * Removes the reserve by id.
 	 * @param id The reserve id.
@@ -111,11 +112,32 @@ public class ReserveDao implements Dao<Reserve> {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_REMOVE);
 			try (preparedStatement) {
 				preparedStatement.setInt(1, id);
-				preparedStatement.execute();
-			
+				preparedStatement.executeUpdate();
+
 				int updateCount = preparedStatement.getUpdateCount();
 				System.out.printf("Cantidad de registros eliminados: %d%n", updateCount);
 				return updateCount;
+			}
+		} catch (SQLException e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	/**
+	 * Updates the reserve.
+	 * @param reserve The reserve.
+	 * @return The reserve amount updated.
+	 */
+	public Integer update(Reserve reserve) {
+		try(this.con) {
+			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_UPDATE);
+			try(preparedStatement) {
+				preparedStatement.setDate(1, Date.valueOf(reserve.getCheckinDate()));
+				preparedStatement.setDate(2, Date.valueOf(reserve.getCheckoutDate()));
+				preparedStatement.setBigDecimal(3, reserve.getValue());
+				preparedStatement.setString(4, reserve.getPaymentMethod().name());
+				preparedStatement.executeUpdate();
+				return preparedStatement.getUpdateCount();
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
