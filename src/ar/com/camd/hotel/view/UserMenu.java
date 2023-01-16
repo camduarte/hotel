@@ -161,12 +161,13 @@ public class UserMenu extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				int option = JOptionPane.showConfirmDialog(null, "¿Quieres salir de la aplicación?", "Hotel",
+				int option = JOptionPane.showConfirmDialog(null, "¿Quieres desloguearte?", "Hotel",
 						JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
 
 				switch (option) {
 				case 0:
-					System.exit(0);
+					new Login().setVisible(true);
+					dispose();
 					break;
 				default:
 					break;
