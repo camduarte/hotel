@@ -332,7 +332,7 @@ public class GuestRegister extends JFrame {
 		btnexit.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				MenuPrincipal principal = new MenuPrincipal();
+				MainMenu principal = new MainMenu();
 				principal.setVisible(true);
 				dispose();
 			}
