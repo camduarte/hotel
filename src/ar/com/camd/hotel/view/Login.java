@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.SystemColor;
+import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
@@ -21,9 +22,7 @@ import javax.swing.border.EmptyBorder;
 
 public class Login extends JFrame {
 
-	/**
-	 * 
-	 */
+	private final String IMG_WINDOW_ICON = "../img/camd-logo-hotel-fondo-blanco-128-96.png";
 	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 	private JTextField txtUsuario;
@@ -51,6 +50,7 @@ public class Login extends JFrame {
 	 * Create the frame.
 	 */
 	public Login() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(Login.class.getResource(IMG_WINDOW_ICON)));
 		setResizable(false);
 		setUndecorated(true);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -222,8 +222,8 @@ public class Login extends JFrame {
 
 		JLabel lblNewLabel_1 = new JLabel("");
 		lblNewLabel_1.setHorizontalAlignment(SwingConstants.CENTER);
-		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("../img/lOGO-50PX.png")));
-		lblNewLabel_1.setBounds(65, 65, 48, 59);
+		lblNewLabel_1.setIcon(new ImageIcon(Login.class.getResource("../img/camd-hotel-logo-35x50.png")));
+		lblNewLabel_1.setBounds(65, 65, 35, 50);
 		panel.add(lblNewLabel_1);
 
 		JPanel header = new JPanel();

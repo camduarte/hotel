@@ -97,7 +97,7 @@ public class GuestDao implements Dao<Guest> {
 
 	@Override
 	public Guest save(Guest guest) {
-		try(this.con) {
+		try {
 			final PreparedStatement preparedStatement = 
 					this.con.prepareStatement(QRY_SAVE,
 							PreparedStatement.RETURN_GENERATED_KEYS);
@@ -130,32 +130,36 @@ public class GuestDao implements Dao<Guest> {
 	public List<Guest> findAll() {
 		List<Guest> guests = new ArrayList<>();
 		try {
-			PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_ALL);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				Reserve reserve = new Reserve (
-						resultSet.getInt("reserve_id"), 
-						resultSet.getDate("checkin_date").toLocalDate(),
-						resultSet.getDate("checkout_date").toLocalDate(),
-						resultSet.getBigDecimal("value"),
-						PaymentMethod.valueOf(resultSet.getString("payment_method")));
-				
-				Guest guest = new Guest(
-						resultSet.getInt("id"), 
-						resultSet.getString("name"),
-						resultSet.getString("lastname"),
-						resultSet.getDate("birthdate").toLocalDate(),
-						Nationality.valueOf(resultSet.getString("nationality")),
-						resultSet.getString("phone_number"),
-						reserve);
+			final PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_ALL);
+			try(preparedStatement) {
+				final ResultSet resultSet = preparedStatement.executeQuery();
+				try(resultSet) {
+					while (resultSet.next()) {
+						Reserve reserve = new Reserve (
+								resultSet.getInt("reserve_id"), 
+								resultSet.getDate("checkin_date").toLocalDate(),
+								resultSet.getDate("checkout_date").toLocalDate(),
+								resultSet.getBigDecimal("value"),
+								PaymentMethod.valueOf(resultSet.getString("payment_method")));
+						
+						Guest guest = new Guest(
+								resultSet.getInt("id"), 
+								resultSet.getString("name"),
+								resultSet.getString("lastname"),
+								resultSet.getDate("birthdate").toLocalDate(),
+								Nationality.valueOf(resultSet.getString("nationality")),
+								resultSet.getString("phone_number"),
+								reserve);
 
-				System.out.println(guest);
-				guests.add(guest);
+						System.out.println(guest);
+						guests.add(guest);
+					}
+					return guests;
+				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return guests;
 	}
 
 	@Override
@@ -174,7 +178,8 @@ public class GuestDao implements Dao<Guest> {
 			final PreparedStatement preparedStatement = this.con.prepareStatement(QRY_REMOVE);
 			try (preparedStatement) {
 				preparedStatement.setInt(1, id);
-				int updateCount = preparedStatement.executeUpdate();
+				preparedStatement.executeUpdate();
+				int updateCount = preparedStatement.getUpdateCount();
 				System.out.printf("Cantidad de registros eliminados: %d%n", updateCount);
 				return updateCount;
 			}
@@ -191,33 +196,37 @@ public class GuestDao implements Dao<Guest> {
 	public List<Guest> find(String lastName) {
 		List<Guest> guests = new ArrayList<>();
 		try {
-			PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_BY_LAST_NAME);
-			preparedStatement.setString(1, lastName);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			while (resultSet.next()) {
-				Reserve reserve = new Reserve(
-						resultSet.getInt("reserve_id"),
-						resultSet.getDate("checkin_date").toLocalDate(),
-						resultSet.getDate("checkout_date").toLocalDate(),
-						resultSet.getBigDecimal("value"),
-						PaymentMethod.valueOf(resultSet.getString("payment_method")));
+			final PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_BY_LAST_NAME);
+			try(preparedStatement) {
+				preparedStatement.setString(1, lastName);
+				final ResultSet resultSet = preparedStatement.executeQuery();
+				try(resultSet) {
+					while (resultSet.next()) {
+						Reserve reserve = new Reserve(
+								resultSet.getInt("reserve_id"),
+								resultSet.getDate("checkin_date").toLocalDate(),
+								resultSet.getDate("checkout_date").toLocalDate(),
+								resultSet.getBigDecimal("value"),
+								PaymentMethod.valueOf(resultSet.getString("payment_method")));
 
-				Guest guest = new Guest(
-						resultSet.getInt("id"),
-						resultSet.getString("name"),
-						resultSet.getString("lastname"),
-						resultSet.getDate("birthdate").toLocalDate(),
-						Nationality.valueOf(resultSet.getString("nationality")),
-						resultSet.getString("phone_number"),
-						reserve);
+						Guest guest = new Guest(
+								resultSet.getInt("id"),
+								resultSet.getString("name"),
+								resultSet.getString("lastname"),
+								resultSet.getDate("birthdate").toLocalDate(),
+								Nationality.valueOf(resultSet.getString("nationality")),
+								resultSet.getString("phone_number"),
+								reserve);
 
-				System.out.println(guest);
-				guests.add(guest);
+						System.out.println(guest);
+						guests.add(guest);
+					}	
+					return guests;
+				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return guests;
 	}
 
 	/**
@@ -228,30 +237,34 @@ public class GuestDao implements Dao<Guest> {
 	public Guest findByReserveId(Integer reserveId) {
 		Guest guest = null;
 		try {
-			PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_BY_RESERVE_ID);
-			preparedStatement.setInt(1, reserveId);
-			ResultSet resultSet = preparedStatement.executeQuery();
-			if (resultSet.next()) {
-				Reserve reserve = new Reserve(
-						resultSet.getInt("reserve_id"), 
-						resultSet.getDate("checkin_date").toLocalDate(),
-						resultSet.getDate("checkout_date").toLocalDate(),
-						resultSet.getBigDecimal("value"),
-						PaymentMethod.valueOf(resultSet.getString("payment_method")));
+			final PreparedStatement preparedStatement = con.prepareStatement(QRY_FIND_BY_RESERVE_ID);
+			try(preparedStatement) {
+				preparedStatement.setInt(1, reserveId);
+				final ResultSet resultSet = preparedStatement.executeQuery();
+				try(resultSet) {
+					if (resultSet.next()) {
+						Reserve reserve = new Reserve(
+								resultSet.getInt("reserve_id"), 
+								resultSet.getDate("checkin_date").toLocalDate(),
+								resultSet.getDate("checkout_date").toLocalDate(),
+								resultSet.getBigDecimal("value"),
+								PaymentMethod.valueOf(resultSet.getString("payment_method")));
 
-				guest = new Guest(
-						resultSet.getInt("id"), 
-						resultSet.getString("name"),
-						resultSet.getString("lastname"),
-						resultSet.getDate("birthdate").toLocalDate(),
-						Nationality.valueOf(resultSet.getString("nationality")),
-						resultSet.getString("phone_number"),
-						reserve);
+						guest = new Guest(
+								resultSet.getInt("id"), 
+								resultSet.getString("name"),
+								resultSet.getString("lastname"),
+								resultSet.getDate("birthdate").toLocalDate(),
+								Nationality.valueOf(resultSet.getString("nationality")),
+								resultSet.getString("phone_number"),
+								reserve);
 
-				System.out.println(guest);
+						System.out.println(guest);
+					}
+				}
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		return guest;
 	}
@@ -277,8 +290,9 @@ public class GuestDao implements Dao<Guest> {
 				preparedStatement.setString(4, guest.getNationality().name());
 				preparedStatement.setString(5, guest.getPhoneNumber());
 				preparedStatement.setInt(6, guest.getId());
-				
-				int updateCount = preparedStatement.executeUpdate();
+				preparedStatement.executeUpdate();
+
+				int updateCount = preparedStatement.getUpdateCount();
 				System.out.printf("Cantidad de registros modificados: %d%n", updateCount);
 				return updateCount;
 			}

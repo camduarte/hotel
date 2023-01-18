@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 @SuppressWarnings("serial")
 public class UserMenu extends JFrame {
 
+	private final String IMG_WINDOW_ICON = "../img/camd-logo-hotel-fondo-blanco-128-96.png";
 	private JPanel contentPane;
 	int xMouse, yMouse;
 	private JLabel labelExit;
@@ -48,7 +49,7 @@ public class UserMenu extends JFrame {
 	 * Create the frame.
 	 */
 	public UserMenu() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(UserMenu.class.getResource("../img/aH-40px.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(UserMenu.class.getResource(IMG_WINDOW_ICON)));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 944, 609);
 		contentPane = new JPanel();
@@ -81,9 +82,10 @@ public class UserMenu extends JFrame {
 		panelMenu.setLayout(null);
 
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setBounds(50, 58, 150, 150);
+		lblNewLabel_2.setBounds(50, 58, 150, 113);
 		panelMenu.add(lblNewLabel_2);
-		lblNewLabel_2.setIcon(new ImageIcon(UserMenu.class.getResource("../img/aH-150px.png")));
+		lblNewLabel_2
+				.setIcon(new ImageIcon(UserMenu.class.getResource("../img/camd-hotel-logo-fondo-blanco-150-113.png")));
 
 		JPanel btnRegistro = new JPanel();
 		btnRegistro.addMouseListener(new MouseAdapter() {

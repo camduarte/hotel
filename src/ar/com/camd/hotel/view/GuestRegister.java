@@ -34,8 +34,10 @@ import ar.com.camd.hotel.model.Reserve;
 @SuppressWarnings("serial")
 public class GuestRegister extends JFrame {
 
+	private final String IMG_WINDOW_ICON = "../img/camd-logo-hotel-fondo-blanco-128-96.png";
+
 	private GuestController guestController;
-	
+
 	private JPanel contentPane;
 	private JTextField txtName;
 	private JTextField txtLastName;
@@ -69,7 +71,7 @@ public class GuestRegister extends JFrame {
 	public GuestRegister(Reserve reserve) {
 		this.guestController = new GuestController();
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(GuestRegister.class.getResource("../img/lOGO-50PX.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(GuestRegister.class.getResource(IMG_WINDOW_ICON)));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 634);
 		contentPane = new JPanel();
@@ -163,9 +165,7 @@ public class GuestRegister extends JFrame {
 		txtNationality.setBackground(SystemColor.text);
 		txtNationality.setFont(new Font("Roboto", Font.PLAIN, 16));
 
-		txtNationality.setModel(new DefaultComboBoxModel<Object>(
-				Nationality.getDescriptions().toArray()
-				));
+		txtNationality.setModel(new DefaultComboBoxModel<Object>(Nationality.getDescriptions().toArray()));
 
 		contentPane.add(txtNationality);
 
@@ -274,25 +274,21 @@ public class GuestRegister extends JFrame {
 				String lastName = txtLastName.getText();
 				Date dBirthDate = txtFechaN.getDate();
 
-				Nationality nationality = Nationality.findByDescription(
-						(String)txtNationality.getSelectedItem());
+				Nationality nationality = Nationality.findByDescription((String) txtNationality.getSelectedItem());
 
 				String phoneNumber = txtPhoneNumber.getText();
 				String sReservationNumber = txtReservationNumber.getText();
 
-				if (!name.isBlank() && !lastName.isBlank() && dBirthDate != null && 
-						nationality != null && !phoneNumber.isBlank() && 
-						!sReservationNumber.isBlank()) {
+				if (!name.isBlank() && !lastName.isBlank() && dBirthDate != null && nationality != null
+						&& !phoneNumber.isBlank() && !sReservationNumber.isBlank()) {
 
-						LocalDate birthDate = LocalDate.ofInstant(
-								dBirthDate.toInstant(), ZoneId.systemDefault());
+					LocalDate birthDate = LocalDate.ofInstant(dBirthDate.toInstant(), ZoneId.systemDefault());
 
-						Guest guest = new Guest(name, lastName, birthDate, 
-								nationality, phoneNumber, reserve);
-						guest = guestController.save(guest);
-						System.out.println(guest);
-						dispose(); // Close the current view.
-						new Success().setVisible(true); // Go to success view.
+					Guest guest = new Guest(name, lastName, birthDate, nationality, phoneNumber, reserve);
+					guest = guestController.save(guest);
+					System.out.println(guest);
+					dispose(); // Close the current view.
+					new Success().setVisible(true); // Go to success view.
 				} else {
 					showMsgFieldsUncompleted();
 				}
@@ -322,9 +318,9 @@ public class GuestRegister extends JFrame {
 		imagenFondo.setIcon(new ImageIcon(GuestRegister.class.getResource("../img/registro.png")));
 
 		JLabel logo = new JLabel("");
-		logo.setBounds(194, 39, 104, 107);
+		logo.setBounds(194, 39, 100, 75);
 		panel.add(logo);
-		logo.setIcon(new ImageIcon(GuestRegister.class.getResource("../img/Ha-100px.png")));
+		logo.setIcon(new ImageIcon(GuestRegister.class.getResource("../img/camd-hotel-logo-fondo-blanco-100-75.png")));
 
 		JPanel btnexit = new JPanel();
 		btnexit.setBounds(857, 0, 53, 36);
@@ -377,8 +373,8 @@ public class GuestRegister extends JFrame {
 	 * Show message All fields must be completed.
 	 */
 	private void showMsgFieldsUncompleted() {
-		JOptionPane.showMessageDialog(this, "Se deben completar todos los campos.",
-				"Fecha incorrecta", JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, "Se deben completar todos los campos.", "Fecha incorrecta",
+				JOptionPane.INFORMATION_MESSAGE);
 	}
-	
+
 }

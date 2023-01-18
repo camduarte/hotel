@@ -21,6 +21,7 @@ import javax.swing.border.EmptyBorder;
 @SuppressWarnings("serial")
 public class MainMenu extends JFrame {
 
+	private final String IMG_WINDOW_ICON = "../img/camd-logo-hotel-fondo-blanco-128-96.png";
 	private JPanel contentPane;
 	private JLabel labelExit;
 	int xMouse, yMouse;
@@ -45,7 +46,7 @@ public class MainMenu extends JFrame {
 	 * Create the frame.
 	 */
 	public MainMenu() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(MainMenu.class.getResource("../img/aH-40px.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(MainMenu.class.getResource(IMG_WINDOW_ICON)));
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setBounds(100, 100, 910, 537);
 		contentPane = new JPanel();
@@ -68,8 +69,8 @@ public class MainMenu extends JFrame {
 		panel.add(imagenFondo);
 
 		JLabel logo = new JLabel("");
-		logo.setBounds(722, 80, 150, 156);
-		logo.setIcon(new ImageIcon(MainMenu.class.getResource("../img/aH-150px.png")));
+		logo.setBounds(741, 78, 105, 150);
+		logo.setIcon(new ImageIcon(MainMenu.class.getResource("../img/camd-hotel-logo-105x150.png")));
 		panel.add(logo);
 
 		JPanel panel_1 = new JPanel();

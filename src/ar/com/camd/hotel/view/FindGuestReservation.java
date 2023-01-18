@@ -38,17 +38,17 @@ import ar.com.camd.hotel.model.Reserve;
 @SuppressWarnings("serial")
 public class FindGuestReservation extends JFrame {
 
-	private final String TITLE_INVALID_PAYMENT_METHOD = 
-			"Método de pago no válido";
+	private final String IMG_WINDOW_ICON = "../img/camd-logo-hotel-fondo-blanco-128-96.png";
+	
+	private final String TITLE_INVALID_PAYMENT_METHOD = "Método de pago no válido";
 
-	private final String MSG_INVALID_PAYMENT_METHOD = 
-			String.format("Los valores posibles para le método de pago son: %s, %s o %s.",
-					PaymentMethod.CASH.getDescription(), 
-					PaymentMethod.DEBIT.getDescription(), 
-					PaymentMethod.CREDIT.getDescription());
+	private final String MSG_INVALID_PAYMENT_METHOD = String.format(
+		"Los valores posibles para le método de pago son: %s, %s o %s.",
+		PaymentMethod.CASH.getDescription(), 
+		PaymentMethod.DEBIT.getDescription(), 
+		PaymentMethod.CREDIT.getDescription());
 
-	private final String MSG_SELECCIONE_UN_ITEM = 
-			"Por favor, seleccione un item";
+	private final String MSG_SELECCIONE_UN_ITEM = "Por favor, seleccione un item";
 
 	private FindController findController;
 
@@ -84,7 +84,7 @@ public class FindGuestReservation extends JFrame {
 	public FindGuestReservation() {
 		this.findController = new FindController();
 
-		setIconImage(Toolkit.getDefaultToolkit().getImage(FindGuestReservation.class.getResource("../img/lupa2.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(FindGuestReservation.class.getResource(IMG_WINDOW_ICON)));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 571);
 		contentPane = new JPanel();
@@ -138,8 +138,8 @@ public class FindGuestReservation extends JFrame {
 		modeloH.addColumn("Numero de Reserva");
 
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(FindGuestReservation.class.getResource("../img/Ha-100px.png")));
-		lblNewLabel_2.setBounds(56, 51, 104, 107);
+		lblNewLabel_2.setIcon(new ImageIcon(FindGuestReservation.class.getResource("../img/camd-hotel-logo-70x100.png")));
+		lblNewLabel_2.setBounds(56, 51, 70, 100);
 		contentPane.add(lblNewLabel_2);
 
 		JPanel header = new JPanel();
@@ -147,7 +147,6 @@ public class FindGuestReservation extends JFrame {
 			@Override
 			public void mouseDragged(MouseEvent e) {
 				headerMouseDragged(e);
-
 			}
 		});
 		header.addMouseListener(new MouseAdapter() {
@@ -280,36 +279,31 @@ public class FindGuestReservation extends JFrame {
 		btnEditar.add(lblEditar);
 
 		btnEditar.addMouseListener(new MouseListener() {
-			
 			@Override
 			public void mouseReleased(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
-			
+
 			@Override
 			public void mousePressed(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
-			
+
 			@Override
 			public void mouseExited(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
-			
+
 			@Override
 			public void mouseEntered(MouseEvent e) {
 				// TODO Auto-generated method stub
-				
 			}
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tbHuespedes.getSelectedRow() != -1) {
+				if (tbHuespedes.getSelectedRowCount() != 0 || tbHuespedes.getSelectedColumnCount() != 0) {
 					updateGuest();
-				} else if (tbReservas.getSelectedRow() != -1) {
+				} else if (tbReservas.getSelectedRowCount() != 0 || tbReservas.getSelectedColumnCount() != 0) {
 					updateReserve();
 				} else {
 					showMsgSelectItem();
@@ -452,14 +446,14 @@ public class FindGuestReservation extends JFrame {
 	 * Updates the guest.
 	 */
 	protected void updateGuest() {
-		Optional.ofNullable(modelo.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
+		Optional.ofNullable(modeloH.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
 		.ifPresentOrElse(fila -> {
 
 			Integer id = (Integer) modeloH.getValueAt(tbHuespedes.getSelectedRow(), 0);
 			String name = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 1).toString();
 			String lastName = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 2).toString();
 			LocalDate birthDate = LocalDate.parse(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 3).toString());
-			Nationality nationality = Nationality.valueOf(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 4).toString());
+			Nationality nationality = Nationality.findByDescription(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 4).toString());
 			String phoneNumber = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 5).toString();
 
 			Guest guest = new Guest(id, name, lastName, birthDate, nationality, phoneNumber);

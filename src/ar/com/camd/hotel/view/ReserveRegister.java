@@ -40,11 +40,11 @@ import ar.com.camd.hotel.model.Reserve;
 @SuppressWarnings("serial")
 public class ReserveRegister extends JFrame {
 
-	private static final String MSG_WRONG_DATES = "¡La fecha de salida debe ser mas grande que la fecha de entrada!";
-	private static final String IMG_ICON_RESERVAS_PNG = "../img/icon-reservas.png";
-	private static final String IMG_A_H_40PX_PNG = "../img/aH-40px.png";
-	private static final String IMG_RESERVAS_IMG_3_PNG = "../img/reservas-img-3.png";
-	private static final String IMG_HA_100PX_PNG = "../img/Ha-100px.png";
+	private final String IMG_WINDOW_ICON = "../img/camd-logo-hotel-fondo-blanco-128-96.png";
+	private final String MSG_WRONG_DATES = "¡La fecha de salida debe ser mas grande que la fecha de entrada!";
+	private final String IMG_ICON_RESERVAS_PNG = "../img/icon-reservas.png";
+	private final String IMG_RESERVAS_IMG_3_PNG = "../img/reservas-img-3.png";
+	private final String IMG_LOGO = "../img/camd-hotel-logo-fondo-blanco-100-75.png";
 
 	private ReserveController reserveController;
 
@@ -80,8 +80,7 @@ public class ReserveRegister extends JFrame {
 	public ReserveRegister() {
 		super("Reserva");
 		this.reserveController = new ReserveController();
-
-		setIconImage(Toolkit.getDefaultToolkit().getImage(ReserveRegister.class.getResource(IMG_A_H_40PX_PNG)));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(ReserveRegister.class.getResource(IMG_WINDOW_ICON)));
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 910, 560);
 		setResizable(false);
@@ -121,8 +120,7 @@ public class ReserveRegister extends JFrame {
 
 		txtFechaE = new JDateChooser();
 		txtFechaE.getCalendarButton().setBackground(SystemColor.textHighlight);
-		txtFechaE.getCalendarButton()
-				.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_ICON_RESERVAS_PNG)));
+		txtFechaE.getCalendarButton().setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_ICON_RESERVAS_PNG)));
 		txtFechaE.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 12));
 		txtFechaE.setBounds(68, 161, 289, 35);
 		txtFechaE.getCalendarButton().setBounds(268, 0, 21, 33);
@@ -166,8 +164,7 @@ public class ReserveRegister extends JFrame {
 		panel.add(lblCheckOut);
 
 		txtFechaS = new JDateChooser();
-		txtFechaS.getCalendarButton()
-				.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_ICON_RESERVAS_PNG)));
+		txtFechaS.getCalendarButton().setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_ICON_RESERVAS_PNG)));
 		txtFechaS.getCalendarButton().setFont(new Font("Roboto", Font.PLAIN, 11));
 		txtFechaS.setBounds(68, 246, 289, 35);
 		txtFechaS.getCalendarButton().setBounds(267, 1, 21, 31);
@@ -214,11 +211,8 @@ public class ReserveRegister extends JFrame {
 		txtFormaPago.setBorder(new LineBorder(new Color(255, 255, 255), 1, true));
 		txtFormaPago.setFont(new Font("Roboto", Font.PLAIN, 16));
 
-		String[] options = new String[] {
-				PaymentMethod.CASH.getDescription(), 
-				PaymentMethod.DEBIT.getDescription(), 
-				PaymentMethod.CREDIT.getDescription()
-				};
+		String[] options = new String[] { PaymentMethod.CASH.getDescription(), PaymentMethod.DEBIT.getDescription(),
+				PaymentMethod.CREDIT.getDescription() };
 
 		txtFormaPago.setModel(new DefaultComboBoxModel<String>(options));
 		txtFormaPago.setSelectedIndex(0);
@@ -228,8 +222,8 @@ public class ReserveRegister extends JFrame {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				JComboBox<String> cb = (JComboBox<String>)event.getSource();
-				String item = (String)cb.getSelectedItem();
+				JComboBox<String> cb = (JComboBox<String>) event.getSource();
+				String item = (String) cb.getSelectedItem();
 				System.out.println(item);
 			}
 		});
@@ -253,9 +247,9 @@ public class ReserveRegister extends JFrame {
 		panel1.setLayout(null);
 
 		JLabel logo = new JLabel("");
-		logo.setBounds(197, 68, 104, 107);
+		logo.setBounds(197, 68, 100, 75);
 		panel1.add(logo);
-		logo.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_HA_100PX_PNG)));
+		logo.setIcon(new ImageIcon(ReserveRegister.class.getResource(IMG_LOGO)));
 
 		JLabel imagenFondo = new JLabel("");
 		imagenFondo.setBounds(0, 140, 500, 409);
@@ -360,12 +354,11 @@ public class ReserveRegister extends JFrame {
 
 				Date dateOut = txtFechaS.getDate();
 				Date dateIn = txtFechaE.getDate();
-				String sPaymentMethod = (String)txtFormaPago.getSelectedItem();
+				String sPaymentMethod = (String) txtFormaPago.getSelectedItem();
 				String sReserveValue = txtValor.getText();
-				
+
 				// If all fields are completed go to guest view.
-				if (dateIn != null && dateOut != null &&
-					sPaymentMethod != null && sReserveValue != null) {
+				if (dateIn != null && dateOut != null && sPaymentMethod != null && sReserveValue != null) {
 
 					LocalDate checkinDate = LocalDate.ofInstant(dateIn.toInstant(), ZoneId.systemDefault());
 					LocalDate checkoutDate = LocalDate.ofInstant(dateOut.toInstant(), ZoneId.systemDefault());
@@ -374,7 +367,7 @@ public class ReserveRegister extends JFrame {
 					Reserve reserve = new Reserve(checkinDate, checkoutDate, reserveValue, paymentMethod);
 					reserve = reserveController.save(reserve);
 					System.out.println(reserve);
-					
+
 					dispose(); // Close the current view.
 					GuestRegister registro = new GuestRegister(reserve); // Go to guest register view.
 					registro.setVisible(true);
@@ -414,16 +407,16 @@ public class ReserveRegister extends JFrame {
 	 * Show message wrong dates.
 	 */
 	private void showMsgWrongDates() {
-		JOptionPane.showMessageDialog(this, MSG_WRONG_DATES, "Fecha incorrecta",
-				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(this, MSG_WRONG_DATES, "Fecha incorrecta", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	/**
 	 * Calculates the reservation value.
-	 * @param dateIn The check in date.
+	 * 
+	 * @param dateIn  The check in date.
 	 * @param dateOut The check out date.
 	 */
-	private void calculateReservationValue(Date dateIn, Date dateOut ) {
+	private void calculateReservationValue(Date dateIn, Date dateOut) {
 		if (dateOut != null && dateIn != null) {
 			LocalDate checkinDate = LocalDate.ofInstant(dateIn.toInstant(), ZoneId.systemDefault());
 			LocalDate checkoutDate = LocalDate.ofInstant(dateOut.toInstant(), ZoneId.systemDefault());
@@ -444,4 +437,4 @@ public class ReserveRegister extends JFrame {
 			System.out.println("Check-in date or check-out date is null.");
 		}
 	}
- }
+}

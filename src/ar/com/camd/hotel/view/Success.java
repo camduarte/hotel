@@ -48,8 +48,9 @@ public class Success extends JDialog {
 		contentPanel.setLayout(null);
 		{
 			JLabel lblNewLabel = new JLabel("");
-			lblNewLabel.setIcon(new ImageIcon(Success.class.getResource("../img/Ha-100px.png")));
-			lblNewLabel.setBounds(123, 11, 100, 100);
+			lblNewLabel.setIcon(
+					new ImageIcon(Success.class.getResource("../img/camd-hotel-logo-fondo-blanco-100-75.png")));
+			lblNewLabel.setBounds(146, 22, 100, 75);
 			contentPanel.add(lblNewLabel);
 		}
 		{
