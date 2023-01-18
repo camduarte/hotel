@@ -206,7 +206,7 @@ public class UserMenu extends JFrame {
 		contentPane.add(panelFecha);
 		panelFecha.setLayout(null);
 
-		JLabel lblNewLabel_1 = new JLabel("Sistema de reservas Hotel Alura");
+		JLabel lblNewLabel_1 = new JLabel("Sistema de reservas Camd Hotel");
 		lblNewLabel_1.setBounds(180, 11, 356, 42);
 		panelFecha.add(lblNewLabel_1);
 		lblNewLabel_1.setForeground(Color.WHITE);
