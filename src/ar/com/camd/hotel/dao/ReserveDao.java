@@ -138,7 +138,10 @@ public class ReserveDao implements Dao<Reserve> {
 				preparedStatement.setString(4, reserve.getPaymentMethod().name());
 				preparedStatement.setInt(5, reserve.getId());
 				preparedStatement.executeUpdate();
-				return preparedStatement.getUpdateCount();
+
+				int updateCount = preparedStatement.getUpdateCount();
+				System.out.printf("Cantidad de registros modificados: %d%n", updateCount);
+				return updateCount;
 			}
 		} catch (SQLException e) {
 			throw new RuntimeException(e);

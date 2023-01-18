@@ -11,7 +11,6 @@ import java.awt.event.MouseMotionAdapter;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -38,17 +37,19 @@ import ar.com.camd.hotel.model.Reserve;
 @SuppressWarnings("serial")
 public class FindGuestReservation extends JFrame {
 
+	private final String IMG_LOGO = "../img/camd-hotel-logo-70x100.png";
+	private final String IMG_PESSOAS_PNG = "../img/pessoas.png";
+	private final String IMG_RESERVADO_PNG = "../img/reservado.png";
 	private final String IMG_WINDOW_ICON = "../img/camd-logo-hotel-fondo-blanco-128-96.png";
-	
+
 	private final String TITLE_INVALID_PAYMENT_METHOD = "Método de pago no válido";
 
+	private final String MSG_SELECCIONE_UN_ITEM = "Por favor, seleccione un item";
 	private final String MSG_INVALID_PAYMENT_METHOD = String.format(
 		"Los valores posibles para le método de pago son: %s, %s o %s.",
 		PaymentMethod.CASH.getDescription(), 
 		PaymentMethod.DEBIT.getDescription(), 
 		PaymentMethod.CREDIT.getDescription());
-
-	private final String MSG_SELECCIONE_UN_ITEM = "Por favor, seleccione un item";
 
 	private FindController findController;
 
@@ -116,7 +117,7 @@ public class FindGuestReservation extends JFrame {
 		tbReservas = new JTable();
 		tbReservas.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbReservas.setFont(new Font("Roboto", Font.PLAIN, 16));
-		panel.addTab("Reservas", new ImageIcon(FindGuestReservation.class.getResource("../img/reservado.png")), tbReservas, null);
+		panel.addTab("Reservas", new ImageIcon(FindGuestReservation.class.getResource(IMG_RESERVADO_PNG)), tbReservas, null);
 		modelo = (DefaultTableModel) tbReservas.getModel();
 		modelo.addColumn("Numero de Reserva");
 		modelo.addColumn("Fecha Check In");
@@ -127,7 +128,7 @@ public class FindGuestReservation extends JFrame {
 		tbHuespedes = new JTable();
 		tbHuespedes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tbHuespedes.setFont(new Font("Roboto", Font.PLAIN, 16));
-		panel.addTab("Huéspedes", new ImageIcon(FindGuestReservation.class.getResource("../img/pessoas.png")), tbHuespedes, null);
+		panel.addTab("Huéspedes", new ImageIcon(FindGuestReservation.class.getResource(IMG_PESSOAS_PNG)), tbHuespedes, null);
 		modeloH = (DefaultTableModel) tbHuespedes.getModel();
 		modeloH.addColumn("Numero de Huesped");
 		modeloH.addColumn("Nombre");
@@ -138,7 +139,7 @@ public class FindGuestReservation extends JFrame {
 		modeloH.addColumn("Numero de Reserva");
 
 		JLabel lblNewLabel_2 = new JLabel("");
-		lblNewLabel_2.setIcon(new ImageIcon(FindGuestReservation.class.getResource("../img/camd-hotel-logo-70x100.png")));
+		lblNewLabel_2.setIcon(new ImageIcon(FindGuestReservation.class.getResource(IMG_LOGO)));
 		lblNewLabel_2.setBounds(56, 51, 70, 100);
 		contentPane.add(lblNewLabel_2);
 
@@ -241,7 +242,7 @@ public class FindGuestReservation extends JFrame {
 				modeloH.getDataVector().clear();
 
 				String searchTerm = txtBuscar.getText();
-				System.out.printf("searchTerm<%s>", searchTerm);
+				System.out.printf("searchTerm<%s>%n", searchTerm);
 				if (isDigit(searchTerm)) {
 					Guest guest = findController.getByReserveId(Integer.valueOf(searchTerm));
 					fillTable(guest);
@@ -301,9 +302,9 @@ public class FindGuestReservation extends JFrame {
 
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				if (tbHuespedes.getSelectedRowCount() != 0 || tbHuespedes.getSelectedColumnCount() != 0) {
+				if (tbHuespedes.getSelectedRow() != -1) {
 					updateGuest();
-				} else if (tbReservas.getSelectedRowCount() != 0 || tbReservas.getSelectedColumnCount() != 0) {
+				} if (tbReservas.getSelectedRow() != -1) {
 					updateReserve();
 				} else {
 					showMsgSelectItem();
@@ -363,12 +364,12 @@ public class FindGuestReservation extends JFrame {
 
 	// Código que permite mover la ventana por la pantalla según la posición de "x"
 	// y "y"
-	private void headerMousePressed(java.awt.event.MouseEvent evt) {
+	private void headerMousePressed(MouseEvent evt) {
 		xMouse = evt.getX();
 		yMouse = evt.getY();
 	}
 
-	private void headerMouseDragged(java.awt.event.MouseEvent evt) {
+	private void headerMouseDragged(MouseEvent evt) {
 		int x = evt.getXOnScreen();
 		int y = evt.getYOnScreen();
 		this.setLocation(x - xMouse, y - yMouse);
@@ -387,54 +388,34 @@ public class FindGuestReservation extends JFrame {
 	}
 
 	/**
-	 * Removes a selected guest.
-	 */
-	private void removeGuest() {
-		Optional.ofNullable(modelo.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
-				.ifPresentOrElse(fila -> {
-					Integer id = (Integer) modeloH.getValueAt(tbHuespedes.getSelectedRow(), 0);
-					Integer guestRemoved = this.findController.removeGuest(id);
-					modeloH.removeRow(tbHuespedes.getSelectedRow());
-
-					JOptionPane.showMessageDialog(this, guestRemoved + " item eliminado con éxito!");
-				}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
-	}
-
-	/**
 	 * Removes a selected reserve.
 	 */
 	private void removeReserve() {
-		Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
-				.ifPresentOrElse(fila -> {
-					Integer id = (Integer) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
-					Integer reservationsRemoved = this.findController.removeReserve(id);
-					
-					int indexRow = tbReservas.getSelectedRow();
-					modelo.removeRow(indexRow);
-					modeloH.removeRow(indexRow);
+		Integer id = (Integer) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
+		Integer reservationsRemoved = this.findController.removeReserve(id);
 
-					JOptionPane.showMessageDialog(this, reservationsRemoved + " item eliminado con éxito!");
-				}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
+		int indexRow = tbReservas.getSelectedRow();
+		modelo.removeRow(indexRow);
+		modeloH.removeRow(indexRow);
+
+		showMsgItemRemoved(reservationsRemoved);
 	}
-	
+
 	/**
 	 * Removes a selected reserve.
 	 * @param rowIndex The index row.
 	 */
 	private void removeReserve(Integer rowIndex) {
-		Optional.ofNullable(modelo.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
-				.ifPresentOrElse(fila -> {
-					Integer id = (Integer) modeloH.getValueAt(tbHuespedes.getSelectedRow(), 6);
-					Integer reservationsRemoved = this.findController.removeReserve(id);
-					
-					int indexRow = tbHuespedes.getSelectedRow();
-					modelo.removeRow(indexRow);
-					modeloH.removeRow(indexRow);
+		Integer id = (Integer) modeloH.getValueAt(tbHuespedes.getSelectedRow(), 6);
+		Integer reservationsRemoved = this.findController.removeReserve(id);
 
-					JOptionPane.showMessageDialog(this, reservationsRemoved + " item eliminado con éxito!");
-				}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
+		int indexRow = tbHuespedes.getSelectedRow();
+		modelo.removeRow(indexRow);
+		modeloH.removeRow(indexRow);
+
+		showMsgItemRemoved(reservationsRemoved);
 	}
-	
+
 	/**
 	 * Shows message Select an item, please.
 	 */
@@ -443,54 +424,51 @@ public class FindGuestReservation extends JFrame {
 	}
 
 	/**
+	 * Shows message Number of items removed.
+	 */
+	private void showMsgItemRemoved(Integer itemsRemoved) {
+		JOptionPane.showMessageDialog(this, itemsRemoved + " item eliminado con éxito!");
+	}
+
+	/**
 	 * Updates the guest.
 	 */
 	protected void updateGuest() {
-		Optional.ofNullable(modeloH.getValueAt(tbHuespedes.getSelectedRow(), tbHuespedes.getSelectedColumn()))
-		.ifPresentOrElse(fila -> {
+		Integer id = (Integer) modeloH.getValueAt(tbHuespedes.getSelectedRow(), 0);
+		String name = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 1).toString();
+		String lastName = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 2).toString();
+		LocalDate birthDate = LocalDate.parse(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 3).toString());
+		Nationality nationality = Nationality.findByDescription(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 4).toString());
+		String phoneNumber = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 5).toString();
 
-			Integer id = (Integer) modeloH.getValueAt(tbHuespedes.getSelectedRow(), 0);
-			String name = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 1).toString();
-			String lastName = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 2).toString();
-			LocalDate birthDate = LocalDate.parse(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 3).toString());
-			Nationality nationality = Nationality.findByDescription(modeloH.getValueAt(tbHuespedes.getSelectedRow(), 4).toString());
-			String phoneNumber = modeloH.getValueAt(tbHuespedes.getSelectedRow(), 5).toString();
+		Guest guest = new Guest(id, name, lastName, birthDate, nationality, phoneNumber);
+		Integer guestUpdated = this.findController.update(guest);
 
-			Guest guest = new Guest(id, name, lastName, birthDate, nationality, phoneNumber);
-			Integer guestUpdated = this.findController.update(guest);
-
-			String msg = String.format("¡%d item actualizado con éxito!", guestUpdated);
-			JOptionPane.showMessageDialog(this, msg);
-
-		}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
+		String msg = String.format("¡%d item actualizado con éxito!", guestUpdated);
+		JOptionPane.showMessageDialog(this, msg);
 	}
-	
+
 	/**
 	 * Updates the reserve.
 	 */
 	protected void updateReserve() {
-		Optional.ofNullable(modelo.getValueAt(tbReservas.getSelectedRow(), tbReservas.getSelectedColumn()))
-		.ifPresentOrElse(fila -> {
+		Integer id = (Integer) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
+		LocalDate checkinDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 1).toString());
+		LocalDate checkoutDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 2).toString());
+		BigDecimal value = new BigDecimal(modelo.getValueAt(tbReservas.getSelectedRow(),3).toString()); 
+		
+		PaymentMethod paymentMethod = PaymentMethod.findByDescription((String)modelo.getValueAt(tbReservas.getSelectedRow(),4));
+		if (paymentMethod == null) {
+			JOptionPane.showMessageDialog(this, MSG_INVALID_PAYMENT_METHOD, 
+					TITLE_INVALID_PAYMENT_METHOD, JOptionPane.INFORMATION_MESSAGE);
+			return;
+		}
 
-			Integer id = (Integer) modelo.getValueAt(tbReservas.getSelectedRow(), 0);
-			LocalDate checkinDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 1).toString());
-			LocalDate checkoutDate = LocalDate.parse(modelo.getValueAt(tbReservas.getSelectedRow(), 2).toString());
-			BigDecimal value = new BigDecimal(modelo.getValueAt(tbReservas.getSelectedRow(),3).toString()); 
-			
-			PaymentMethod paymentMethod = PaymentMethod.findByDescription((String)modelo.getValueAt(tbReservas.getSelectedRow(),4));
-			if (paymentMethod == null) {
-				JOptionPane.showMessageDialog(this, MSG_INVALID_PAYMENT_METHOD, 
-						TITLE_INVALID_PAYMENT_METHOD, JOptionPane.INFORMATION_MESSAGE);
-				return;
-			}
+		Reserve reserve = new Reserve(id, checkinDate, checkoutDate, value, paymentMethod);
+		Integer guestUpdated = this.findController.update(reserve);
 
-			Reserve reserve = new Reserve(id, checkinDate, checkoutDate, value, paymentMethod);
-			Integer guestUpdated = this.findController.update(reserve);
-
-			String msg = String.format("¡%d item actualizado con éxito!", guestUpdated);
-			JOptionPane.showMessageDialog(this, msg);
-
-		}, () -> JOptionPane.showMessageDialog(this, MSG_SELECCIONE_UN_ITEM));
+		String msg = String.format("¡%d item actualizado con éxito!", guestUpdated);
+		JOptionPane.showMessageDialog(this, msg);
 	}
 
 	/**
