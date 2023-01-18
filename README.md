@@ -66,7 +66,11 @@
 <img src="https://github.com/camduarte/hotel/blob/master/resources/ar/com/camd/hotel/img/screenshots/remove-guest-1.png" width="500">
 <img src="https://github.com/camduarte/hotel/blob/master/resources/ar/com/camd/hotel/img/screenshots/remove-guest-2.png" width="500">
 
+## Sobre el proyecto
 <p>Proyecto propuesto como desafío en el curso impartido por Alura Latam + ONE.</p>
+<p>Insignia por haber conluido el proyecto:</p>
+
+![image](https://drive.google.com/uc?export=view&id=1hB2n5KrPgrBrr2yua8MidO59BzJKjDOd)
 
 <p>¡Muchas gracias!<br>
 Christian Ariel Modesto Duarte</p>
