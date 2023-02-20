@@ -70,7 +70,7 @@
 <p>Proyecto propuesto como desafío en el curso impartido por Alura Latam + ONE.</p>
 <p>Insignia por haber conluido el proyecto:</p>
 
-![image](https://drive.google.com/uc?export=view&id=1hB2n5KrPgrBrr2yua8MidO59BzJKjDOd)
+![image](https://user-images.githubusercontent.com/33993670/220095519-704b31a5-834b-4ec8-933a-346352540571.png)
 
 <p>¡Muchas gracias!<br>
 Christian Ariel Modesto Duarte</p>
